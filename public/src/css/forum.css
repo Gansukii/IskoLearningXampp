@@ -1,0 +1,58 @@
+.paper {
+    background-color: #ffffff;
+    border: 0.75px solid #C4C4C4;
+}
+
+.txtPaper {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.questionIcons {
+    color: #A1A1A1;
+}
+
+.questionName {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 19px;
+}
+
+.questionTime {
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.askQuestionPaper {
+    max-height: 130px;
+}
+
+.btnAsk {
+    font-size: 16px;
+    color: #C4C4C4;
+    border: 0.75px solid #C4C4C4;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.upvoted {
+    color: #7F0303;
+}
+
+.txtModal {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+#questionTitle::placeholder,
+#questionTags::placeholder {
+    font-weight: 600;
+    font-size: 14px;
+    color: #C4C4C4;
+}
+
+.btnPostAsk {
+    background-color: #7F0303;
+    border-radius: 5px;
+    color: #ffffff;
+}
