@@ -8,9 +8,6 @@ const userTypeNav = document.getElementById("userTypeNav");
 let isOpen = false;
 var lg = 992;
 
-fullNameNav.innerHTML = localStorage.getItem("fullname");
-userTypeNav.innerHTML = localStorage.getItem("status_type");
-
 // $(document).click(function (event) {
 //   console.log(isOpen);
 //   console.log(menuPop);
@@ -31,6 +28,11 @@ if (menuPop) {
       menuPop.removeAttribute("style");
     }
   }
+}
+
+if (fullNameNav) {
+  fullNameNav.innerHTML = localStorage.getItem("fullname");
+  userTypeNav.innerHTML = localStorage.getItem("status_type");
 }
 
 avatar

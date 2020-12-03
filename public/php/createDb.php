@@ -34,23 +34,21 @@ if ( $conn->query( $sql ) ) {
   `last_login_ip` VARCHAR(50), 
   `registration_date` DATE NOT NULL);";
 
-    $ForumTables = " CREATE TABLE Forum (
-  forum_id INT(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  course_id INT(6) NOT NULL,
-  course_chapter_id INT(6),
-  user_id INT(6),
-  title VARCHAR(200) NOT NULL,
-  text_question VARCHAR(200) NOT NULL,
-  text_body VARCHAR(1000),
-  upvote_count MEDIUMINT NOT NULL DEFAULT 0,
-  downvote_count MEDIUMINT NOT NULL DEFAULT 0,
-  created_datetime DATETIME NOT NULL
+    $ForumTables = " CREATE TABLE `Forum` (
+  `forum_id` INT(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(200) NOT NULL,
+  `user_id` INT(6) NOT NULL,
+  `text_body` VARCHAR(1000),
+  `upvote_count` MEDIUMINT NOT NULL DEFAULT 0,
+  `downvote_count` MEDIUMINT NOT NULL DEFAULT 0,
+  `created_datetime` DATETIME NOT NULL
   );";
     $conn = mysqli_connect( $servername, $username, $password, "iskolearning" );
     if ( $conn->query( $UsersTables ) === TRUE && $conn->query(($ForumTables))) {
         echo "Tables created successfully";
     } else {
         echo "Error creating table: " . $conn->error;
+
     }
 
 } else {
@@ -59,3 +57,4 @@ if ( $conn->query( $sql ) ) {
 
 mysqli_close( $conn );
 ?>
+
