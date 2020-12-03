@@ -2,8 +2,14 @@ const search = document.getElementById("search");
 const avatar = document.getElementById("avatar");
 const menuPop = document.getElementById("menuPop");
 const signOut = document.getElementById("sign-out");
+const fullNameNav = document.getElementById("fullNameNav");
+const userTypeNav = document.getElementById("userTypeNav");
+
 let isOpen = false;
 var lg = 992;
+
+fullNameNav.innerHTML = localStorage.getItem("fullname");
+userTypeNav.innerHTML = localStorage.getItem("status_type");
 
 // $(document).click(function (event) {
 //   console.log(isOpen);
@@ -29,7 +35,6 @@ if (menuPop) {
 
 avatar
   ? (avatar.onclick = () => {
-      console.log("ngak");
       if (!isOpen) {
         menuPop.classList.remove("d-none");
         menuPop.classList.remove("menuClose");
