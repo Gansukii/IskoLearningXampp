@@ -12,12 +12,8 @@ $questions_array=array();
 $response->questions=array();
 
 
-$ask_query = "SELECT forum.forum_id, forum.title, forum.text_body, forum.upvote_count, forum.downvote_count, forum.created_datetime, forum.comment_count, user_information.fullname, user_information.username, user_information.user_type
-FROM `forum` 
-INNER JOIN user_information ON user_information.user_information_id=forum.user_id
-ORDER BY forum.created_datetime DESC";
+$ask_query = "SELECT forum_id, upvote_count, comment_count FROM `forum` ORDER BY created_datetime DESC";
 $result = $conn->query($ask_query);
-
 
 if($result->num_rows > 0){
     while($row = $result->fetch_assoc()){

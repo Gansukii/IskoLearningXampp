@@ -41,6 +41,7 @@ if ( $conn->query( $sql ) ) {
   `text_body` VARCHAR(1000),
   `upvote_count` MEDIUMINT NOT NULL DEFAULT 0,
   `downvote_count` MEDIUMINT NOT NULL DEFAULT 0,
+  `comment_count` MEDIUMINT NOT NULL DEFAULT 0,
   `created_datetime` DATETIME NOT NULL
   );";
 

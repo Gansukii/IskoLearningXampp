@@ -21,8 +21,10 @@ else{
     $upvote_query = "DELETE FROM Upvote WHERE forum_id = '$forum_id';
     UPDATE Forum SET upvote_count ='$total_upvotes' WHERE forum_id = '$forum_id'";
 }
+
 if($conn->multi_query( $upvote_query )){
-     $response->code = 200;
+
+    $response->code = 200;
     $echo = json_encode( $response );
 }else{
     $response->code = 400;

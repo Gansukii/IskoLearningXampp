@@ -4,6 +4,7 @@ const btnAskQuestion = document.getElementById("btnAskQuestion");
 const questionsContainer = document.getElementById("questionsContainer");
 let currDate = new Date();
 let isUpvotedArr = [];
+let questionsArr = [];
 
 $.ajax({
   url: "../public/php/forum/getUpvotesById.php",
@@ -20,6 +21,7 @@ $.ajax({
       success: function (response) {
         const data = JSON.parse(response);
         if (data.code === 200) {
+          questionsArr = data.questions;
           showQuestions(data.questions);
         } else alert(data.text);
       },
@@ -58,7 +60,7 @@ const showQuestions = (questions) => {
                   <i class='far fa-caret-square-up mr-1'></i><div>${data.upvote_count}</div>
                 </div>
                 <div class='d-flex align-items-center iconToggle' onClick='comment(this)'>
-                  <i class='far fa-comment mr-1'></i>0
+                  <i class='far fa-comment mr-1'></i>${data.comment_count}
                 </div>
               </div>
               <div class='row d-flex align-items-center'>
@@ -81,28 +83,53 @@ const showQuestions = (questions) => {
 
 function upvote(e) {
   let upvoted;
+  let forumIdentifier = questionsArr.filter(
+    (data) => data.forum_id == e.parentNode.getAttribute("key")
+  );
+
+  console.log(forumIdentifier[0].upvote_count);
   if (!e.classList.contains("upvoted")) {
     e.classList.add("upvoted");
-    e.lastElementChild.innerHTML = parseInt(e.lastElementChild.innerHTML) + 1;
+    forumIdentifier[0].upvote_count =
+      parseInt(forumIdentifier[0].upvote_count) + 1;
+    e.lastElementChild.innerHTML = forumIdentifier[0].upvote_count;
     upvoted = 1;
   } else {
     e.classList.remove("upvoted");
-    e.lastElementChild.innerHTML = parseInt(e.lastElementChild.innerHTML) - 1;
+    forumIdentifier[0].upvote_count =
+      parseInt(forumIdentifier[0].upvote_count) - 1;
+    e.lastElementChild.innerHTML = forumIdentifier[0].upvote_count;
     upvoted = 0;
   }
+  console.log(forumIdentifier[0].upvote_count);
   $.ajax({
     url: "../public/php/forum/addUpvote.php",
     method: "post",
     data: {
       forumId: parseInt(e.parentNode.getAttribute("key")),
-      totalUpvote: parseInt(e.lastElementChild.innerHTML),
+      totalUpvote: forumIdentifier[0].upvote_count,
       add: upvoted,
     },
     success: function (response) {
-      const data = JSON.parse(response);
-      if (!data.code === 200) {
-        alert(data.text);
-      }
+      console.log(forumIdentifier[0].upvote_count);
+
+      // const data = JSON.parse(response);
+      // if (!data.code === 200) {
+      //   alert(data.text);
+      // }
+      // $.ajax({
+      //   url: "../public/php/forum/getQuestionDetails.php",
+      //   method: "get",
+      //   success: function (response) {
+      //     // console.log(response);
+      //     const data = JSON.parse(response);
+      //     if (data.code === 200) {
+      //       // questionsArr = [];
+      //       // questionsArr = data.questions;
+      //     }
+      //   },
+      // });
+      // console.log(questionsArr[0].upvote_count);
     },
   });
 }
