@@ -3,15 +3,27 @@ const questionBody = document.getElementById("questionBody");
 const btnAskQuestion = document.getElementById("btnAskQuestion");
 const questionsContainer = document.getElementById("questionsContainer");
 let currDate = new Date();
+let isUpvotedArr = [];
 
 $.ajax({
-  url: "../public/php/forum/getQuestion.php",
+  url: "../public/php/forum/getUpvotesById.php",
   method: "get",
   success: function (response) {
     const data = JSON.parse(response);
     if (data.code === 200) {
-      showQuestions(data.questions);
-    } else alert(data.text);
+      isUpvotedArr = data.is_upvoted.map((rowData) => rowData.forum_id);
+    } else console.log(data.text);
+
+    $.ajax({
+      url: "../public/php/forum/getQuestion.php",
+      method: "get",
+      success: function (response) {
+        const data = JSON.parse(response);
+        if (data.code === 200) {
+          showQuestions(data.questions);
+        } else alert(data.text);
+      },
+    });
   },
 });
 
@@ -37,14 +49,15 @@ const showQuestions = (questions) => {
       var days = Math.floor(hh / 24);
       timeAgo = days.toString() + " days ago";
     }
+    let isUpvoted = isUpvotedArr.includes(data.forum_id) ? "upvoted" : "";
 
     var node = document.createElement("div");
-    node.innerHTML = `<div class='col-12 mb-3' key=${data.forum_id}>
-              <div class='row mb-3 questionIcons'>
-                <div class='d-flex align-items-center mr-3'>
-                  <i class='far fa-caret-square-up mr-1'></i>${data.upvote_count}
+    node.innerHTML = `<div class='col-12 mb-3'>
+              <div class='row mb-3 questionIcons' key=${data.forum_id}>
+                <div class='p-0 d-flex align-items-center mr-3 iconToggle ${isUpvoted}' onClick='upvote(this)'>
+                  <i class='far fa-caret-square-up mr-1'></i><div>${data.upvote_count}</div>
                 </div>
-                <div class='d-flex align-items-center'>
+                <div class='d-flex align-items-center iconToggle' onClick='comment(this)'>
                   <i class='far fa-comment mr-1'></i>0
                 </div>
               </div>
@@ -63,6 +76,36 @@ const showQuestions = (questions) => {
     questionsContainer.appendChild(node);
   });
 };
+
+// EVENT HANDLERS
+
+function upvote(e) {
+  let upvoted;
+  if (!e.classList.contains("upvoted")) {
+    e.classList.add("upvoted");
+    e.lastElementChild.innerHTML = parseInt(e.lastElementChild.innerHTML) + 1;
+    upvoted = 1;
+  } else {
+    e.classList.remove("upvoted");
+    e.lastElementChild.innerHTML = parseInt(e.lastElementChild.innerHTML) - 1;
+    upvoted = 0;
+  }
+  $.ajax({
+    url: "../public/php/forum/addUpvote.php",
+    method: "post",
+    data: {
+      forumId: parseInt(e.parentNode.getAttribute("key")),
+      totalUpvote: parseInt(e.lastElementChild.innerHTML),
+      add: upvoted,
+    },
+    success: function (response) {
+      const data = JSON.parse(response);
+      if (!data.code === 200) {
+        alert(data.text);
+      }
+    },
+  });
+}
 
 btnAskQuestion.onclick = () => {
   if (questionTitle.value == "" || questionBody.value == "") {
