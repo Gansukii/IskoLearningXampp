@@ -45,9 +45,10 @@ const showQuestions = (questions) => {
     } else if (hh < 1) {
       if (mm == 1) timeAgo = "1 minute ago";
       else timeAgo = mm.toString() + " minutes ago";
-    } else if (hh <= 24) {
+    } else if (hh <= 48) {
       timeAgo = "1 day ago";
     } else {
+      console.log(hh);
       var days = Math.floor(hh / 24);
       timeAgo = days.toString() + " days ago";
     }
@@ -55,7 +56,7 @@ const showQuestions = (questions) => {
 
     var node = document.createElement("div");
     node.innerHTML = `<div class='col-12 mb-3'>
-              <div class='row mb-3 questionIcons' key=${data.forum_id}>
+              <div class='row mb-3 questionIcons' key=${data.forum_id} time=${dateDiff}>
                 <div class='p-0 d-flex align-items-center mr-3 iconToggle ${isUpvoted}' onClick='upvote(this)'>
                   <i class='far fa-caret-square-up mr-1'></i><div>${data.upvote_count}</div>
                 </div>
@@ -132,6 +133,17 @@ function upvote(e) {
       // console.log(questionsArr[0].upvote_count);
     },
   });
+}
+
+function comment(e) {
+  let forumId = e.parentNode.getAttribute("key");
+  let time = e.parentNode.getAttribute("time");
+  let isUp = 0;
+  if (e.previousElementSibling.classList.contains("upvoted")) isUp = 1;
+  console.log(isUp);
+  window.location.assign(
+    `../public/answer.html?id=${forumId}&t=${time}&isUp=${isUp}`
+  );
 }
 
 btnAskQuestion.onclick = () => {

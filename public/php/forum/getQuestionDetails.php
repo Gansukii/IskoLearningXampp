@@ -12,7 +12,7 @@ $questions_array=array();
 $response->questions=array();
 
 
-$ask_query = "SELECT forum_id, upvote_count, comment_count FROM `forum` ORDER BY created_datetime DESC";
+$ask_query = "SELECT forum_id, upvote_count, comment_count FROM `forum` ORDER BY upvote_count DESC, created_datetime DESC";
 $result = $conn->query($ask_query);
 
 if($result->num_rows > 0){
