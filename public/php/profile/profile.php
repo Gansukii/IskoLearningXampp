@@ -11,12 +11,11 @@ $username = $_POST['username'];
 $response = new \stdClass();
 $id = $_SESSION["userId"];
 
-
 $edit_query = "UPDATE User_Information SET fullname = '$fullname', username = '$username' WHERE user_information_id = '$id'";
 
 if($conn->query( $edit_query )){
      $response->code = 200;
-    $response->text = "Profile Successfully editted";
+    $response->text = "Profile Successfully edited";
     $echo = json_encode( $response );
 }else{
     $response->code = 400;

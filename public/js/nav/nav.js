@@ -1,5 +1,6 @@
 const search = document.getElementById("search");
 const avatar = document.getElementById("avatar");
+const menuAvatar = document.getElementById("menuAvatar");
 const menuPop = document.getElementById("menuPop");
 const signOut = document.getElementById("sign-out");
 const fullNameNav = document.getElementById("fullNameNav");
@@ -14,6 +15,12 @@ var lg = 992;
 // });
 
 if (menuPop) {
+  avatar.style = `background: url('${localStorage.getItem(
+    "image_path"
+  )}') no-repeat center; background-size: cover;`;
+  menuAvatar.style = `background: url('${localStorage.getItem(
+    "image_path"
+  )}') no-repeat center; background-size: cover;`;
   window.onresize = () => {
     if (document.documentElement.clientWidth < lg) {
       menuPop.style.left = "-100px";

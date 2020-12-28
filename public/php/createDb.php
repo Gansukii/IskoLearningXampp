@@ -29,7 +29,7 @@ if ( $conn->query( $sql ) ) {
   `introduction_brief` VARCHAR(1000),
   `department` VARCHAR(100) DEFAULT '',
   `user_password` VARCHAR(50) NOT NULL,
-  `image_id` INT,
+  `image_path` VARCHAR(100),
   `last_login_datetime` DATETIME NOT NULL,
   `last_login_ip` VARCHAR(50), 
   `registration_date` DATE NOT NULL);

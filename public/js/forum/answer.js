@@ -50,11 +50,13 @@ $.ajax({
     }
     $.ajax({
       url: "../public/php/forum/answer/getAnswer.php",
-      method: "get",
+      method: "post",
+      data: {
+        forumId: forumId,
+      },
       success: function (response) {
         const data = JSON.parse(response);
         if (data.code === 200) {
-          //   upvoteCounteAnswer = data.upvote_count;
           showAnswers(data.answers);
         }
       },
