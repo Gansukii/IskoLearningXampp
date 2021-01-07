@@ -19,11 +19,10 @@ signIn.onclick = (e) => {
       if (data.code === 200) {
         localStorage.setItem("fullname", data.fullname);
         localStorage.setItem("username", data.username);
-        localStorage.setItem(
-          "status_type",
-          data.user_type === "s" ? "STUDENT" : "PROFESSOR"
-        );
-        window.location.assign("../public/home.html");
+        localStorage.setItem("status_type", data.user_type === "s" ? "STUDENT" : "PROFESSOR");
+        localStorage.setItem("image_path", data.image_path);
+        if (data.user_type === "p") window.location.assign("../public/professor/home.html");
+        else if (data.user_type === "s") window.location.assign("../public/home.html");
       } else alert(data.text);
     },
   });

@@ -19,12 +19,14 @@ if ( $result->num_rows > 0 ) {
         $fullname = $row['fullname'];
         $username = $row['username'];
         $user_type = $row['user_type'];
+        $image_path = $row['image_path'];
     }
     $response->code = 200;
     $response->text = "Signed in";
     $response->fullname =  $fullname;
     $response->username = $username;
     $response->user_type = $user_type;
+    $response->image_path = $image_path;
     $echo = json_encode( $response );
     
 } else {
