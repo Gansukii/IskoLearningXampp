@@ -25,6 +25,8 @@ let chapterCount = 1;
 let formData = {};
 let imageFile;
 let hasImage = false;
+let imageFormData;
+
 // let vidsPerChapter = [];
 
 btnBack.onclick = () => {
@@ -85,6 +87,8 @@ thumbUpload.onchange = (e) => {
   imageUrl = URL.createObjectURL(imageFile);
   thumb.style = `background: url(${imageUrl}) no-repeat center; background-size: cover;`;
   hasImage = true;
+  imageFormData = new FormData(document.getElementById("upload_thumb"));
+  imageFormData.append("upload-image", imageFile);
 };
 deleteImage.onclick = (e) => {
   e.preventDefault();
@@ -850,17 +854,7 @@ btnSubmit.onclick = () => {
             </div>
           </div>
         <div class="text-center my-3" id="txtLoading" style="font-size: 1rem;">Creating Course</div>
-        <div class="col-12 mb-3 d-none" id="progressContainer">
-            <div class="progress">
-              <div
-                class="progress-bar progress-bar-striped"
-                role="progressbar"
-                aria-valuemin="0"
-                aria-valuemax="100"
-                id="uploadProgressBar"
-              ></div>
-            </div>
-          </div>
+        
         </div>
       </div>
       <div class="modal-footer py-0">
@@ -879,16 +873,11 @@ function btnConfirmSubmit(element) {
   element.setAttribute("disabled", "");
   document.getElementById("modalConfirmTxt").remove();
   document.getElementById("loadingContainer").classList.remove("d-none");
-  if (hasImage) {
-    progressContainer.classList.remove("d-none");
-    const uploadProgressBar = document.getElementById("uploadProgressBar");
-    console.log("path the image");
-  } else {
-    saveToDb(null);
-  }
+
+  saveToDb();
 }
 
-function saveToDb(url) {
+function saveToDb() {
   //   let user = currentUser;
 
   //   let newCourseChapterKey = firebase.database().ref().child("course_chapters").push().key;
@@ -900,15 +889,11 @@ function saveToDb(url) {
     chapter_number: chapterCount,
     units: unitsInput.value.trim(),
     prerequisite: prerequisiteInput.value.trim(),
-    course_thumbnail: url,
-    student_count: 0,
-    created_datetime: Date.now(),
+    // course_thumbnail: url,
+    // created_datetime:
     // contents: newCourseChapterKey,
     // prof_name: user.displayName,
-    rating: 0,
-    review_count: 0,
   };
-  console.log(courseData);
   let chapterObj = {};
   for (let i = 1; i <= chapterCount; i++) {
     let videoCount = 0;
@@ -925,6 +910,42 @@ function saveToDb(url) {
       video_count: videoCount,
       quiz_count: quizCount,
     };
+
+    $.ajax({
+      url: "../php/course-creation/course-creation.php",
+      method: "GET",
+      data: {
+        data: courseData,
+      },
+      success: function (response) {
+        console.log(response);
+        const data = JSON.parse(response);
+        if (data.code === 200) {
+          if (hasImage) {
+            imageFormData.append("id", data.last_id);
+
+            $.ajax({
+              type: "POST",
+              url: "../php/course-creation/uploadThumbnail.php",
+              data: imageFormData,
+              cache: false,
+              contentType: false,
+              processData: false,
+              //data: $("#upload_img").serialize(),
+              success: function (response) {
+                const data = JSON.parse(response);
+                if (data.code === 200) {
+                  setTimeout(() => {
+                    window.history.back();
+                  }, 500);
+                } else alert(data.text);
+              },
+            });
+          }
+        } else alert(data.text);
+      },
+    });
+
     // courseData.contents.push(chapterObj);
   }
   //   let updates = {};
@@ -932,7 +953,7 @@ function saveToDb(url) {
   //   updates["user_course/" + user.uid + "/" + newCourseKey] = courseData;
   //   updates["course_chapters/" + newCourseChapterKey] = chapterObj;
   //   firebase.database().ref().update(updates);
-  //   setTimeout(() => {
-  //     window.history.back();
-  //   }, 500);
+  // setTimeout(() => {
+  //   window.history.back();
+  // }, 500);
 }

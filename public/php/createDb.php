@@ -60,6 +60,24 @@ if ( $conn->query( $sql ) ) {
   `text_content` VARCHAR(1000) NOT NULL,
   `upvote_count` MEDIUMINT NOT NULL DEFAULT 0,
   `downvote_count` MEDIUMINT NOT NULL DEFAULT 0
+);
+
+CREATE TABLE `Course` (
+  `course_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `educator_id` INT NOT NULL,
+  `creation_datetime` DATETIME NOT NULL,
+  `course_title` VARCHAR(200) NOT NULL DEFAULT '',
+  `course_brief` VARCHAR(4000) NOT NULL DEFAULT '',
+  `category` VARCHAR(200) NOT NULL DEFAULT '',
+  `units` TINYINT NOT NULL DEFAULT 3,
+  `overall_rating` FLOAT(2,1) DEFAULT 0,
+  `review_count` INT DEFAULT 0,
+  `total_enrolled_learners` INT DEFAULT 0,
+  `prerequisite_courses` VARCHAR(200) NULL,
+  `courses_fee` DECIMAL(10,2) DEFAULT 0,
+  `num_of_chapter` TINYINT NOT NULL,
+  `image_path` VARCHAR(100),
+  PRIMARY KEY (`course_id`)
 );";
    
 

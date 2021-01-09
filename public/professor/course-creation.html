@@ -52,7 +52,7 @@
               <div class="col-12 py-3 px-4 txtTitle">Course Details</div>
               <hr class="m-0 w-100" />
               <div class="row w-100 mx-0 py-3 px-4">
-                <form class="w-100">
+                <div class="w-100">
                   <div class="form-group">
                     <label for="courseTitleInput">Course Title</label>
                     <input type="text" class="form-control" id="courseTitleInput" />
@@ -103,16 +103,18 @@
                           "
                         ></i>
                       </button>
-                      <label class="m-0" for="thumbUpload"
-                        >+ Upload Thumbnail
-                        <input type="file" accept="image/*" id="thumbUpload" hidden />
-                      </label>
+                      <form name="upload_thumb" enctype="multipart/form-data" id="upload_thumb">
+                        <label class="m-0" for="thumbUpload"
+                          >+ Upload Thumbnail
+                          <input type="file" accept="image/*" id="thumbUpload" hidden />
+                        </label>
+                      </form>
                     </div>
                     <div class="col-12 col-md-4 px-3 d-flex align-items-center thumbGuidelines">
                       Guidelines for uploading thumbnail (image size, file name)
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
             </div>
           </div>
