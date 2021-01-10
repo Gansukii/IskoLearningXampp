@@ -78,7 +78,38 @@ CREATE TABLE `Course` (
   `num_of_chapter` TINYINT NOT NULL,
   `image_path` VARCHAR(100),
   PRIMARY KEY (`course_id`)
-);";
+);
+
+CREATE TABLE `Course_Chapter` (
+  `course_chapter_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `course_id` INT NOT NULL,
+  `chapter_number` TINYINT NOT NULL,
+  `chapter_title` VARCHAR(150) NOT NULL,
+  `chapter_description` VARCHAR(500) NOT NULL DEFAULT '',
+  `num_of_reading` TINYINT NOT NULL DEFAULT 0,
+  `num_of_video` TINYINT NOT NULL DEFAULT 0,
+  `num_of_quiz` TINYINT NOT NULL DEFAULT 0,
+  `num_of_assignment` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`course_chapter_id`),
+  INDEX(course_id),
+  FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE `Course_Chapter_Content` (
+  `content_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `course_chapter_id` INT NOT NULL,
+  `header_title` VARCHAR(200) NOT NULL,
+  `item_id` VARCHAR(100) NOT NULL,
+  `content_type` INT NOT NULL,
+  PRIMARY KEY (`content_id`),
+  INDEX (course_chapter_id),
+  FOREIGN KEY (course_chapter_id) REFERENCES Course_Chapter(course_chapter_id)
+    ON DELETE CASCADE 
+    -- ON UPDATE CASCADE
+)
+";
    
 
 

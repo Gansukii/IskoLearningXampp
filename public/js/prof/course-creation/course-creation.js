@@ -910,44 +910,46 @@ function saveToDb() {
       video_count: videoCount,
       quiz_count: quizCount,
     };
-
-    $.ajax({
-      url: "../php/course-creation/course-creation.php",
-      method: "GET",
-      data: {
-        data: courseData,
-      },
-      success: function (response) {
-        console.log(response);
-        const data = JSON.parse(response);
-        if (data.code === 200) {
-          if (hasImage) {
-            imageFormData.append("id", data.last_id);
-
-            $.ajax({
-              type: "POST",
-              url: "../php/course-creation/uploadThumbnail.php",
-              data: imageFormData,
-              cache: false,
-              contentType: false,
-              processData: false,
-              //data: $("#upload_img").serialize(),
-              success: function (response) {
-                const data = JSON.parse(response);
-                if (data.code === 200) {
-                  setTimeout(() => {
-                    window.history.back();
-                  }, 500);
-                } else alert(data.text);
-              },
-            });
-          }
-        } else alert(data.text);
-      },
-    });
-
-    // courseData.contents.push(chapterObj);
   }
+
+  console.log(chapterObj);
+  $.ajax({
+    url: "../php/course-creation/course-creation.php",
+    method: "GET",
+    data: {
+      data: courseData,
+      contents: chapterObj,
+    },
+    success: function (response) {
+      console.log(response);
+      // const data = JSON.parse(response);
+      // if (data.code === 200) {
+      //   if (hasImage) {
+      //     imageFormData.append("id", data.last_id);
+
+      //     $.ajax({
+      //       type: "POST",
+      //       url: "../php/course-creation/uploadThumbnail.php",
+      //       data: imageFormData,
+      //       cache: false,
+      //       contentType: false,
+      //       processData: false,
+      //       //data: $("#upload_img").serialize(),
+      //       success: function (response) {
+      //         const data = JSON.parse(response);
+      //         if (data.code === 200) {
+      //           setTimeout(() => {
+      //             window.history.back();
+      //           }, 500);
+      //         } else alert(data.text);
+      //       },
+      //     });
+      //   }
+      // } else alert(data.text);
+    },
+  });
+
+  // courseData.contents.push(chapterObj);
   //   let updates = {};
   //   updates["courses/" + newCourseKey] = courseData;
   //   updates["user_course/" + user.uid + "/" + newCourseKey] = courseData;
