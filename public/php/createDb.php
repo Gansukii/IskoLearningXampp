@@ -109,6 +109,48 @@ CREATE TABLE `Course_Chapter_Content` (
     ON DELETE CASCADE 
     -- ON UPDATE CASCADE
 )
+
+CREATE TABLE `Video` (
+  `video_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `content_id` INT,
+  `title` VARCHAR(200) NOT NULL,
+  `description` VARCHAR(1000),
+  `video_link_id` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`video_id`),
+  INDEX (content_id),
+  FOREIGN KEY (content_id) REFERENCES Course_Chapter_Content(content_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE `Exam` (
+  `exam_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `content_id` INT NOT NULL,
+  `title` VARCHAR(100) NOT NULL,
+  `instructions` VARCHAR(400) NOT NULL,
+  `weighted_grade` FLOAT(2,2) NOT NULL DEFAULT 0,
+  `time_limit` TIME,
+  `total_points` TINYINT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`exam_id`),
+  INDEX (content_id),
+  FOREIGN KEY (content_id) REFERENCES Course_Chapter_Content(content_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+)
+
+CREATE TABLE `Question` (
+  `question_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `exam_id` INT NOT NULL,
+  `question_text` VARCHAR(2000) NOT NULL,
+  `question_number` TINYINT NOT NULL,
+  `point_equivalent` TINYINT NOT NULL DEFAULT 1,
+  `question_answer` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`question_id`),
+  INDEX (exam_id),
+  FOREIGN KEY (exam_id) REFERENCES Exam(exam_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
 ";
    
 

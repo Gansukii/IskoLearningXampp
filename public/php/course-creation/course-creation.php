@@ -62,23 +62,32 @@ if ($conn->query($add_query)) {
 
         foreach ($y['chapter_contents'] as $contentItem) {
             if ($contentItem['video'] == "true") {
-                $add_chapter_query .= " INSERT INTO Course_Chapter_Content (course_chapter_id, header_title, item_id, content_type) VALUES ( LAST_INSERT_ID(), '$contentItem[title]', '$contentItem[itemId]', 1); ";
+                $add_chapter_query .= " INSERT INTO Course_Chapter_Content (course_chapter_id, header_title, item_id, content_type) VALUES ( (SELECT MAX(course_chapter_id) FROM course_chapter), '$contentItem[title]', '$contentItem[itemId]', 1); 
+                INSERT INTO Video (content_id, title, description, video_link_id) VALUES (LAST_INSERT_ID(), '$contentItem[title]', '$contentItem[description]', '$contentItem[videoId]');";
             } else {
-                $add_chapter_query .= " INSERT INTO Course_Chapter_Content (course_chapter_id, header_title, item_id, content_type) VALUES ( LAST_INSERT_ID(),'$contentItem[title]', '$contentItem[itemId]', 2); ";
+                $question_len = (int)count($contentItem['questions']);
+
+                $add_chapter_query .= " INSERT INTO Course_Chapter_Content (course_chapter_id, header_title, item_id, content_type) VALUES ( (SELECT MAX(course_chapter_id) FROM course_chapter),'$contentItem[title]', '$contentItem[itemId]', 2); 
+                INSERT INTO Exam ( content_id, title, instructions, total_points) VALUES (LAST_INSERT_ID(), '$contentItem[title]', '$contentItem[instructions]', $question_len);";
+
+                
+                foreach ($contentItem['questions'] as $question_key => $q_val) {
+                    $add_chapter_query .= " INSERT INTO Question (exam_id, question_text, question_number, question_answer) VALUES ( (SELECT MAX(exam_id) FROM Exam), '$q_val[question]', $question_key, '$q_val[answer]'); "; 
+                }
             }
             // echo $contentItem['itemId'];
             //     echo $contentItem['video'];
             //     echo "---------------";
         }
-
-        echo "looping thru";
     }
+    echo $add_chapter_query;
     if ($conn->multi_query($add_chapter_query)) {
-        echo $add_chapter_query;
-        // trigger_error('Invalid query: ' . $conn->error);
-
         $response->code = 200;
         $response->last_id = $last_course_id;
+        $echo = json_encode($response);
+    } else {
+        $response->code = 400;
+        $response->text = "Server Error";
         $echo = json_encode($response);
     }
 } else {
@@ -88,5 +97,5 @@ if ($conn->query($add_query)) {
     // trigger_error('Invalid query: ' . $conn->error);
 }
 
-echo $echo;
+// echo $echo;
 $conn->close();
