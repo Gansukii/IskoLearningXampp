@@ -8,6 +8,11 @@
   font-size: 14px;
   color: #7e7e7e;
   border: 0.75px solid #7e7e7e;
+  cursor: pointer;
+}
+.activeBadge {
+  background-color: #7e7e7e;
+  color: #ffffff;
 }
 
 .courseCard {
@@ -15,8 +20,9 @@
 }
 
 .courseThumb {
-  background: url(https://cms-assets.tutsplus.com/uploads/users/798/posts/27376/preview_image/firebase@2x.png)
-    no-repeat center;
+  /* background: url(https://cms-assets.tutsplus.com/uploads/users/798/posts/27376/preview_image/firebase@2x.png) */
+  /* no-repeat center; */
+  background-color: aqua;
   background-size: cover;
   height: 150px;
 }
@@ -54,8 +60,9 @@
 }
 
 .thumb {
-  background: url(https://froala.com/wp-content/uploads/2019/11/post41.svg)
-    no-repeat center;
+  /* background: url(https://froala.com/wp-content/uploads/2019/11/post41.svg)
+    no-repeat center; */
+  background-color: #b9b9b9;
   background-size: cover;
   height: 150px;
 }
@@ -69,6 +76,9 @@
   font-weight: 700;
   font-size: 16px;
   color: #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .courseProf {
@@ -84,8 +94,9 @@
 }
 
 .categoryThumb {
-  background: url(https://www.cmu.edu/brand/brand-guidelines/images/colors-steel-gray-600x600.png)
-    no-repeat center;
+  /* background: url(https://www.cmu.edu/brand/brand-guidelines/images/colors-steel-gray-600x600.png)
+    no-repeat center; */
+  background-color: gray;
   background-size: cover;
   height: 150px;
 }
@@ -130,11 +141,7 @@
 .arrowRight:hover,
 .arrowLeft:hover {
   background: rgb(255, 255, 255);
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.4) 100%);
   -webkit-text-stroke: 1px #ffffff;
   color: #000;
 }

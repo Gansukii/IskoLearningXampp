@@ -151,6 +151,41 @@ CREATE TABLE `Question` (
     ON DELETE CASCADE 
     ON UPDATE CASCADE
 );
+
+CREATE TABLE `Enrollment_Info` (
+  `enrollment_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `learner_id` INT NOT NULL,
+  `course_id` INT NOT NULL, 
+  `enrollment_date` DATE NOT NULL,
+  `is_paid` CHAR(1) NOT NULL DEFAULT 'N',
+  PRIMARY KEY (`enrollment_id`),
+  INDEX(learner_id),
+  FOREIGN KEY (learner_id) REFERENCES user_information(user_information_id) 
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  INDEX(course_id),
+  FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE `Learning_Progress` (
+  `learning_progress_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `enrollment_id` INT NOT NULL,
+  `text_status` VARCHAR(20) DEFAULT 'Enroll for Free',
+  `progress_percent` INT DEFAULT 0,
+  `current_chapter` INT DEFAULT 1,
+  `current_chapter_title` VARCHAR(200),
+  `begin_stamp` DATE NOT NULL,
+  `completion_stamp` DATE,
+  `status` CHAR(1) NOT NULL DEFAULT 'O',
+  PRIMARY KEY (`learning_progress_id`),
+  INDEX(enrollment_id),
+  FOREIGN KEY (enrollment_id) REFERENCES Enrollment_Info(enrollment_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);   
+
 ";
    
 
