@@ -178,7 +178,7 @@ CREATE TABLE `Learning_Progress` (
   `current_chapter_title` VARCHAR(200),
   `begin_stamp` DATE NOT NULL,
   `completion_stamp` DATE,
-  `status` CHAR(1) NOT NULL DEFAULT 'O',
+  `user_status` CHAR(1) NOT NULL DEFAULT 'O',
   PRIMARY KEY (`learning_progress_id`),
   INDEX(enrollment_id),
   FOREIGN KEY (enrollment_id) REFERENCES Enrollment_Info(enrollment_id)
@@ -190,6 +190,8 @@ CREATE TABLE `User_Exam_Done`(
   `user_exam_done_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
   `learner_id` INT NOT NULL,
   `exam_id` INT NOT NULL,
+  `score` INT NOT NULL,
+  `total` INT NOT NULL,
   PRIMARY KEY (`User_exam_done_id`),
   INDEX (exam_id),
   FOREIGN KEY (exam_id) REFERENCES Exam(exam_id)
