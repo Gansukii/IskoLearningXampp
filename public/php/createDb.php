@@ -186,6 +186,17 @@ CREATE TABLE `Learning_Progress` (
     ON UPDATE CASCADE
 );   
 
+CREATE TABLE `User_Exam_Done`(
+  `user_exam_done_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `learner_id` INT NOT NULL,
+  `exam_id` INT NOT NULL,
+  PRIMARY KEY (`User_exam_done_id`),
+  INDEX (exam_id),
+  FOREIGN KEY (exam_id) REFERENCES Exam(exam_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
 ";
    
 

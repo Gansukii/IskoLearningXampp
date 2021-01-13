@@ -16,7 +16,7 @@ $date = date('Y-m-d H:i:s');
 
 
 $enroll_query = "INSERT INTO enrollment_info (learner_id, course_id, enrollment_date) VALUES ('$id', '$course_id', '$date'); 
-INSERT INTO learning_progress ( enrollment_id, text_status, begin_stamp ) VALUES ( LAST_INSERT_ID(), 'Resume', '$date');";
+INSERT INTO learning_progress ( enrollment_id, text_status, begin_stamp ) VALUES ( LAST_INSERT_ID(), 'Start Course', '$date');";
 
 if ($conn->multi_query($enroll_query)) {
 
