@@ -45,6 +45,8 @@ $.ajax({
   },
 });
 
+getAlluserCourses();
+
 //     firebase
 //       .database()
 //       .ref("student_user_course/" + user.uid)
@@ -144,50 +146,108 @@ function changePage(element) {
   }
 }
 
-// function getInprogress() {
-//   firebase
-//     .database()
-//     .ref("student_user_course/" + currentUser.uid)
-//     .on("child_added", (snapshot) => {
-//       let data = snapshot.val();
-//       let courseNode = document.createElement("div");
+function getInprogress() {
+  $.ajax({
+    url: "../public/php/home/getInProgress.php",
+    method: "get",
+    success: function (response) {
+      let data = JSON.parse(response);
+      displayUserCourse(data.result, inProgressUserCourses);
+    },
+  });
+}
+function getCompleted() {
+  $.ajax({
+    url: "../public/php/home/getCompleted.php",
+    method: "get",
+    success: function (response) {
+      let data = JSON.parse(response);
+      displayUserCourse(data.result, completedUserCourses);
+    },
+  });
+}
 
-//       if (data.progress_percent < 100) {
-//         firebase
-//           .database()
-//           .ref("courses/" + data.courseId)
-//           .once("value")
-//           .then((courseMain) => {
-//             const courseMainData = courseMain.val();
+function getAlluserCourses() {
+  $.ajax({
+    url: "../public/php/home/getUserCourses.php",
+    method: "get",
+    success: function (response) {
+      let data = JSON.parse(response);
+      displayUserCourse(data.result, allUserCourses);
+    },
+  });
+}
+function displayUserCourse(data, courseArr) {
+  for (let course of data) {
+    let courseNode = document.createElement("div");
+    courseNode.className = "col-6 col-lg-4 px-2 mt-2";
+    courseNode.setAttribute("key", course.course_id);
+    courseNode.setAttribute("onclick", `goToCourse(this)`);
 
-//             courseNode.className = "col-6 col-lg-4 px-2 mt-2";
-//             courseNode.setAttribute("key", courseMainData.course_id);
-//             courseNode.setAttribute("onclick", `goToCourse(this)`);
+    courseNode.innerHTML = `
+                  <div class="card rounded courseCard">
+                    <div class="courseThumb" style="background: url(${course.image_path}) no-repeat center;"></div>
+                    <div class="card-body py-2 px-3">
+                      <p class="courseTitle mb-0">${course.course_title}</p>
+                      <p class="courseProf mb-2">${course.fullname}</p>
+                      <p class="courseDes">
+                        ${course.course_brief}
+                      </p>
+                    </div>
+                  </div>`;
 
-//             courseNode.innerHTML = `
-//                   <div class="card rounded courseCard">
-//                     <div class="courseThumb" style="background: url(${courseMainData.course_thumbnail}) no-repeat center;"></div>
-//                     <div class="card-body py-2 px-3">
-//                       <p class="courseTitle mb-0">${courseMainData.course_title}</p>
-//                       <p class="courseProf mb-2">${courseMainData.prof_name}</p>
-//                       <p class="courseDes">
-//                         ${courseMainData.course_brief}
-//                       </p>
-//                     </div>
-//                   </div>`;
+    myCoursesContainer.insertBefore(courseNode, arrowRightCat);
+    if (course.image_path === null) {
+      courseNode.firstElementChild.firstElementChild.removeAttribute("style");
+    }
+    // myCoursesContainer.appendChild(courseNode);
+    courseArr.push(courseNode);
 
-//             myCoursesContainer.insertBefore(courseNode, arrowRightCat);
-//             if (courseMainData.course_thumbnail === undefined) {
-//               courseNode.firstElementChild.firstElementChild.removeAttribute("style");
-//             }
-//             // myCoursesContainer.appendChild(courseNode);
-//             inProgressUserCourses.push(courseNode);
+    myCoursesArrow(courseArr);
+  }
+}
+// firebase
+//   .database()
+//   .ref("student_user_course/" + currentUser.uid)
+//   .on("child_added", (snapshot) => {
+//     let data = snapshot.val();
+//     let courseNode = document.createElement("div");
 
-//             myCoursesArrow(inProgressUserCourses);
-//           });
-//       }
-//     });
-// }
+//     if (data.progress_percent < 100) {
+//       firebase
+//         .database()
+//         .ref("courses/" + data.courseId)
+//         .once("value")
+//         .then((courseMain) => {
+//           const courseMainData = courseMain.val();
+
+//           courseNode.className = "col-6 col-lg-4 px-2 mt-2";
+//           courseNode.setAttribute("key", courseMainData.course_id);
+//           courseNode.setAttribute("onclick", `goToCourse(this)`);
+
+//           courseNode.innerHTML = `
+//                 <div class="card rounded courseCard">
+//                   <div class="courseThumb" style="background: url(${courseMainData.course_thumbnail}) no-repeat center;"></div>
+//                   <div class="card-body py-2 px-3">
+//                     <p class="courseTitle mb-0">${courseMainData.course_title}</p>
+//                     <p class="courseProf mb-2">${courseMainData.prof_name}</p>
+//                     <p class="courseDes">
+//                       ${courseMainData.course_brief}
+//                     </p>
+//                   </div>
+//                 </div>`;
+
+//           myCoursesContainer.insertBefore(courseNode, arrowRightCat);
+//           if (courseMainData.course_thumbnail === undefined) {
+//             courseNode.firstElementChild.firstElementChild.removeAttribute("style");
+//           }
+//           // myCoursesContainer.appendChild(courseNode);
+//           inProgressUserCourses.push(courseNode);
+
+//           myCoursesArrow(inProgressUserCourses);
+//         });
+//     }
+//   });
 
 // function getCompleted() {
 //   firebase

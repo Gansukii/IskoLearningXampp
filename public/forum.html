@@ -15,10 +15,7 @@
       rel="stylesheet"
     />
     <!--  FONTAWESOME  -->
-    <script
-      src="https://kit.fontawesome.com/7d591f1481.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/7d591f1481.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -58,7 +55,7 @@
             </div>
           </li>
           <li class="nav-item mx-3">
-            <a class="nav-link" href="/dashboard">Forum</a>
+            <a class="nav-link" href="forum.html">Forum</a>
           </li>
 
           <li class="nav-item searchContainer">
@@ -84,36 +81,27 @@
           <a class="btn mr-2" id="btnNavIn">My Courses</a>
           <i class="far fa-bell fa-lg notif mr-3"></i>
           <div class="position-relative">
-            <button class="btn avatar" id="avatar">69</button>
+            <button class="btn avatar" id="avatar"></button>
             <div class="menu p-2 d-none flex-column rounded" id="menuPop">
+              <!--                        <div class="row d-flex p-1 p-sm-2 menuHeader">-->
               <div
                 class="container w-100 d-flex align-items-center menuHeader pt-2 pb-2 pb-sm-3 px-1"
               >
-                <div class="menuAvatar" id="avatar">69</div>
+                <div class="menuAvatar" id="menuAvatar"></div>
                 <div class="col mx-2">
                   <div class="row menuName" id="fullNameNav">Full Name</div>
                   <div class="row">
-                    <span
-                      class="badge badge-pill menuBadge px-2"
-                      id="userTypeNav"
-                      >STUDENT</span
-                    >
+                    <span class="badge badge-pill menuBadge px-2" id="userTypeNav">STUDENT</span>
                   </div>
                 </div>
               </div>
+              <!--                        </div>-->
               <div class="list-group list-group-flush p-0">
-                <a
-                  href="profile.html"
-                  class="list-group-item list-group-item-action px-2"
+                <a href="profile.html" class="list-group-item list-group-item-action px-2"
                   >Profile</a
                 >
-                <a href="#" class="list-group-item list-group-item-action px-2"
-                  >Account Settings</a
-                >
-                <a
-                  href="#"
-                  class="list-group-item list-group-item-action px-2"
-                  id="sign-out"
+                <a href="#" class="list-group-item list-group-item-action px-2">Account Settings</a>
+                <a href="#" class="list-group-item list-group-item-action px-2" id="sign-out"
                   ><i class="fas fa-sign-out-alt mr-1"></i>Sign out</a
                 >
               </div>
@@ -126,9 +114,7 @@
     <div class="row m-0 mt-5 px-2 px-md-5 d-flex justify-content-center">
       <div class="row w-100 d-flex justify-content-center mb-5">
         <div class="col-12 col-md-7">
-          <div
-            class="col-12 px-4 py-3 mb-3 mb-md-4 rounded paper askQuestionPaper"
-          >
+          <div class="col-12 px-4 py-3 mb-3 mb-md-4 rounded paper askQuestionPaper">
             <div class="col-12 p-0 txtPaper">Ask a Question</div>
             <div class="col-12 my-2 p-0">
               <button
@@ -139,22 +125,11 @@
                 What is your question
               </button>
             </div>
-            <div
-              class="modal fade"
-              id="askQuestion"
-              tabindex="-1"
-              role="dialog"
-              aria-hidden="true"
-            >
+            <div class="modal fade" id="askQuestion" tabindex="-1" role="dialog" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                   <div class="modal-header p-0 pt-1 pr-2">
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -162,9 +137,7 @@
                     <div class="row px-sm-4 px-2">
                       <form action="" class="w-100">
                         <div class="form-group">
-                          <label for="questionTitle" class="txtModal"
-                            >Title</label
-                          >
+                          <label for="questionTitle" class="txtModal">Title</label>
                           <input
                             type="text"
                             class="form-control"
@@ -174,19 +147,11 @@
                         </div>
 
                         <div class="form-group">
-                          <label for="questionBody" class="txtModal"
-                            >Body</label
-                          >
-                          <textarea
-                            class="form-control"
-                            id="questionBody"
-                            rows="5"
-                          ></textarea>
+                          <label for="questionBody" class="txtModal">Body</label>
+                          <textarea class="form-control" id="questionBody" rows="5"></textarea>
                         </div>
                         <div class="form-group">
-                          <label for="questionTags" class="txtModal"
-                            >Tags</label
-                          >
+                          <label for="questionTags" class="txtModal">Tags</label>
                           <input
                             type="text"
                             class="form-control"
@@ -281,11 +246,7 @@
           </div>
         </div>
 
-        <div
-          class="col-12 col-md-4 mx-2 px-4 py-3 rounded paper askQuestionPaper"
-        >
-          qwerqer
-        </div>
+        <div class="col-12 col-md-4 mx-2 px-4 py-3 rounded paper askQuestionPaper">qwerqer</div>
       </div>
     </div>
 
