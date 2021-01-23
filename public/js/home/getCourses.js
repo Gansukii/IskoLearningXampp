@@ -15,11 +15,8 @@ $.ajax({
   success: function (response) {
     const data = JSON.parse(response);
     if (data.code === 200) {
-      console.log(data.result);
       const currDate = new Date(data.date_now);
       for (let course of data.result) {
-        console.log(course);
-        console.log();
         let timeAgo = getTimeAgo(Math.abs(currDate - new Date(course.creation_datetime)) / 1000);
         const newNode = document.createElement("div");
         newNode.className = "col-6 col-lg-3 px-1 mt-2";

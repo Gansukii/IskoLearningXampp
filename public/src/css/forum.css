@@ -17,7 +17,10 @@
   font-size: 14px;
   line-height: 19px;
 }
-
+.questionTitle {
+  font-weight: 700;
+  font-size: 18px;
+}
 .questionTime {
   font-weight: 600;
   font-size: 11px;

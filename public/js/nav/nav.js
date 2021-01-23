@@ -1,4 +1,5 @@
 const search = document.getElementById("search");
+const btnSearch = document.getElementById("btnSearch");
 const avatar = document.getElementById("avatar");
 const menuAvatar = document.getElementById("menuAvatar");
 const menuPop = document.getElementById("menuPop");
@@ -13,6 +14,16 @@ var lg = 992;
 //   console.log(isOpen);
 //   console.log(menuPop);
 // });
+search.onkeydown = (e) => {
+  if (e.keyCode === 13) {
+    const keySearch = search.value;
+    window.location.assign(`../public/search.html?key=${keySearch}`);
+  }
+};
+btnSearch.onclick = () => {
+  const keySearch = search.value;
+  window.location.assign(`../public/search.html?key=${keySearch}`);
+};
 
 if (menuPop) {
   avatar.style = `background: url('${localStorage.getItem(

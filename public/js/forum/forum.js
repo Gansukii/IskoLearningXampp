@@ -65,11 +65,14 @@ const showQuestions = (questions) => {
                 </div>
               </div>
               <div class='row d-flex align-items-center'>
-                <button class='btn avatar' id='avatar'>Av</button>
+                <button class='btn avatar' id='avatar' style="background: url('${data.image_path}') no-repeat center; background-size: cover;"></button>
                 <div class='col mx-2'>
                   <div class='row questionName'>${data.fullname}</div>
                   <div class='row questionTime'>${timeAgo}</div>
                 </div>
+              </div>
+              <div class='row mt-1 questionTitle'>
+                ${data.title}
               </div>
               <div class='row mt-1'>
                 ${data.text_body}
@@ -91,14 +94,12 @@ function upvote(e) {
   console.log(forumIdentifier[0].upvote_count);
   if (!e.classList.contains("upvoted")) {
     e.classList.add("upvoted");
-    forumIdentifier[0].upvote_count =
-      parseInt(forumIdentifier[0].upvote_count) + 1;
+    forumIdentifier[0].upvote_count = parseInt(forumIdentifier[0].upvote_count) + 1;
     e.lastElementChild.innerHTML = forumIdentifier[0].upvote_count;
     upvoted = 1;
   } else {
     e.classList.remove("upvoted");
-    forumIdentifier[0].upvote_count =
-      parseInt(forumIdentifier[0].upvote_count) - 1;
+    forumIdentifier[0].upvote_count = parseInt(forumIdentifier[0].upvote_count) - 1;
     e.lastElementChild.innerHTML = forumIdentifier[0].upvote_count;
     upvoted = 0;
   }
@@ -141,9 +142,7 @@ function comment(e) {
   let isUp = 0;
   if (e.previousElementSibling.classList.contains("upvoted")) isUp = 1;
   console.log(isUp);
-  window.location.assign(
-    `../public/answer.html?id=${forumId}&t=${time}&isUp=${isUp}`
-  );
+  window.location.assign(`../public/answer.html?id=${forumId}&t=${time}&isUp=${isUp}`);
 }
 
 btnAskQuestion.onclick = () => {

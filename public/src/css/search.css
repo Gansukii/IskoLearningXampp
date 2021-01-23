@@ -1,0 +1,140 @@
+@keyframes animate {
+  0% {
+    background-position: 0 0;
+  }
+
+  50% {
+    background-position: 300% 0;
+  }
+
+  100% {
+    background-position: 0 0;
+  }
+}
+
+.txtSearch {
+  font-weight: bold;
+  font-size: 22px;
+  line-height: 26px;
+  align-items: center;
+  color: #000000;
+}
+.badgeDev {
+  font-weight: 600;
+  font-size: 14px;
+  color: #7e7e7e;
+  border: 0.75px solid #7e7e7e;
+  cursor: pointer;
+}
+.activeBadge {
+  border-color: #7f0303;
+  color: #7f0303;
+}
+
+.thumb {
+  width: 225px;
+  height: 125px;
+  background: #e5e5e5;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.loadingCourseTitle {
+  background: linear-gradient(90deg, #a2a2a2, #bdbdbd, #a2a2a2, #bdbdbd, #a2a2a2, #bdbdbd, #a2a2a2);
+  height: 14px;
+  background-size: 400%;
+  animation: animate 20s linear infinite;
+}
+
+.loadingCourseTxt {
+  background: linear-gradient(90deg, #e5e5e5, #efefef, #e5e5e5, #efefef, #e5e5e5, #efefef, #e5e5e5);
+  height: 12px;
+  background-size: 400%;
+  animation: animate 20s linear infinite;
+}
+.courseContainer {
+  width: 100%;
+}
+.courseTitle {
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+.courseTitle:hover {
+  text-decoration: underline;
+}
+.courseProf {
+  font-weight: bold;
+}
+.courseBrief {
+  font-weight: 400;
+  text-align: justify;
+}
+
+.avatarForum {
+  height: 35px;
+  width: 35px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+}
+.formInfo {
+  color: #555555;
+  line-height: 1;
+  font-weight: 400;
+}
+.formInfoNum {
+  font-size: 20px;
+  font-weight: bold;
+}
+.questionTitle a {
+  font-size: 20px;
+  cursor: pointer;
+  color: #000000;
+}
+.questionTitle a:hover {
+  text-decoration: underline;
+}
+.questionBody {
+  font-weight: 400;
+  font-size: 16px;
+}
+.txtTimeAgo {
+  font-size: 14px;
+  font-weight: 400;
+}
+.tag {
+  font-size: 15px;
+  color: #7f0303;
+  border: 1px solid #7f0303;
+}
+@media screen and (max-width: 576px) {
+  body {
+    font-size: 14px;
+  }
+  .thumb {
+    width: 100%;
+    min-height: 175px;
+    max-height: 200px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .courseContainer {
+    width: 100%;
+  }
+  .questionTitle {
+    font-size: 18px;
+  }
+  .txtTimeAgo,
+  .tag {
+    font-size: 12px;
+  }
+  .avatarForum {
+    height: 30px;
+    width: 30px;
+  }
+}
