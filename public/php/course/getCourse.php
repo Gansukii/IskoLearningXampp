@@ -16,7 +16,7 @@ $response->contents = new \stdClass();
 
 $get_query = "SELECT *
 FROM `Enrollment_Info` 
-WHERE learner_id = '$id";
+WHERE learner_id = '$id' AND course_id = '$course_id'";
 $result = $conn->query($get_query);
 
 

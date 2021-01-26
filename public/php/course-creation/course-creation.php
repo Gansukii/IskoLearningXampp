@@ -80,7 +80,7 @@ if ($conn->query($add_query)) {
             //     echo "---------------";
         }
     }
-    echo $add_chapter_query;
+
     if ($conn->multi_query($add_chapter_query)) {
         $response->code = 200;
         $response->last_id = $last_course_id;
@@ -97,5 +97,5 @@ if ($conn->query($add_query)) {
     // trigger_error('Invalid query: ' . $conn->error);
 }
 
-// echo $echo;
+echo $echo;
 $conn->close();

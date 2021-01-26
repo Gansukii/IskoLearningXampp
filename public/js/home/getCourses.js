@@ -32,7 +32,7 @@ $.ajax({
                           </div>
                         </div>`;
         latest.insertBefore(newNode, arrowRight);
-        if (data.course_thumbnail === undefined) {
+        if (course.image_path === undefined) {
           newNode.firstElementChild.firstElementChild.removeAttribute("style");
         }
         latestCourses.push(newNode);
@@ -303,4 +303,9 @@ function elArrDisplay(elementArr) {
   for (element of elementArr) {
     element.classList.remove("d-none");
   }
+}
+
+function goToCategory(element) {
+  const category = element.textContent.toLowerCase().trim();
+  window.location.assign(`../public/category.html?search=${category}`);
 }

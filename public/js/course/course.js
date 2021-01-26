@@ -42,7 +42,8 @@ window.onresize = () => {
 
 $.ajax({
   url: "../public/php/course/getEnrollmentInfo.php",
-  method: "get",
+  method: "POST",
+  data: { courseId: courseId },
   success: function (response) {
     btnEnroll.removeAttribute("disabled");
     const data = JSON.parse(response);

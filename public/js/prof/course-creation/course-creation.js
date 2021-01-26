@@ -912,7 +912,6 @@ function saveToDb() {
     };
   }
 
-  console.log(chapterObj);
   $.ajax({
     url: "../php/course-creation/course-creation.php",
     method: "GET",
@@ -922,30 +921,31 @@ function saveToDb() {
     },
     success: function (response) {
       console.log(response);
-      // const data = JSON.parse(response);
-      // if (data.code === 200) {
-      //   if (hasImage) {
-      //     imageFormData.append("id", data.last_id);
+      const data = JSON.parse(response);
+      if (data.code === 200) {
+        if (hasImage) {
+          imageFormData.append("id", data.last_id);
 
-      //     $.ajax({
-      //       type: "POST",
-      //       url: "../php/course-creation/uploadThumbnail.php",
-      //       data: imageFormData,
-      //       cache: false,
-      //       contentType: false,
-      //       processData: false,
-      //       //data: $("#upload_img").serialize(),
-      //       success: function (response) {
-      //         const data = JSON.parse(response);
-      //         if (data.code === 200) {
-      //           setTimeout(() => {
-      //             window.history.back();
-      //           }, 500);
-      //         } else alert(data.text);
-      //       },
-      //     });
-      //   }
-      // } else alert(data.text);
+          $.ajax({
+            type: "POST",
+            url: "../php/course-creation/uploadThumbnail.php",
+            data: imageFormData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            //data: $("#upload_img").serialize(),
+            success: function (response) {
+              // console.log(response);
+              const data = JSON.parse(response);
+              if (data.code === 200) {
+                setTimeout(() => {
+                  window.history.back();
+                }, 500);
+              } else alert(data.text);
+            },
+          });
+        }
+      } else alert(data.text);
     },
   });
 

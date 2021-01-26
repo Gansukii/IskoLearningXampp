@@ -14,17 +14,19 @@ var lg = 992;
 //   console.log(isOpen);
 //   console.log(menuPop);
 // });
-search.onkeydown = (e) => {
-  if (e.keyCode === 13) {
+
+if (search) {
+  search.onkeydown = (e) => {
+    if (e.keyCode === 13) {
+      const keySearch = search.value;
+      window.location.assign(`../public/search.html?key=${keySearch}`);
+    }
+  };
+  btnSearch.onclick = () => {
     const keySearch = search.value;
     window.location.assign(`../public/search.html?key=${keySearch}`);
-  }
-};
-btnSearch.onclick = () => {
-  const keySearch = search.value;
-  window.location.assign(`../public/search.html?key=${keySearch}`);
-};
-
+  };
+}
 if (menuPop) {
   avatar.style = `background: url('${localStorage.getItem(
     "image_path"
@@ -83,3 +85,12 @@ avatar
 //         });
 //     })
 //   : null;
+
+if (signOut)
+  signOut.onclick = () => {
+    let statusType = localStorage.getItem("status_type");
+    if (statusType === "PROFESSOR") {
+      window.location.assign(`../../public/index.html?signed-out`);
+    } else window.location.assign(`../public/index.html?signed-out`);
+    localStorage.clear();
+  };
