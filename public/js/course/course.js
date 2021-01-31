@@ -13,7 +13,12 @@ const starContainer = document.getElementById("starContainer");
 const reviewBoxStarContainer = document.getElementById("reviewBoxStarContainer");
 const txtChapterCount = document.getElementById("txtChapterCount");
 const txtStudentCount = document.getElementById("txtStudentCount");
+const starsRev = document.getElementsByClassName("starsRev");
 const txtPrereq = document.getElementById("txtPrereq");
+const reviewsContainer = document.getElementById("reviewsContainer");
+// let totalRating = 0;
+// let totalReview = 0;
+// let finalRating = 0;
 let url = new URL(window.location.href);
 const courseId = url.searchParams.get("id");
 
@@ -125,12 +130,23 @@ $.ajax({
       txtPrereq.innerHTML = courseData.prerequisite_courses === "" ? "--" : data.prerequisite;
       document.getElementById("txtReviewBoxNum").innerHTML = courseData.overall_rating;
       document.getElementById("txtReviewBoxCount").innerHTML = courseData.review_count;
-
       for (let i = 0; i < 5; i++) {
-        const star = document.createElement("i");
-        star.className = i < starCount ? "fas fa-star star2" : "far fa-star star2";
-        reviewBoxStarContainer.appendChild(star);
+        if (i < Math.floor(courseData.overall_rating)) {
+          starsRev[i].classList.remove("far");
+          starsRev[i].classList.add("fas");
+        } else {
+          starsRev[i].classList.remove("fas");
+          starsRev[i].classList.add("far");
+        }
       }
+      const starsReview = reviewBoxStarContainer.cloneNode(true);
+      starContainer.innerHTML = "";
+      starContainer.appendChild(starsReview);
+      // for (let i = 0; i < 5; i++) {
+      //   const star = document.createElement("i");
+      //   star.className = i < starCount ? "fas fa-star star2" : "far fa-star star2";
+      //   reviewBoxStarContainer.appendChild(star);
+      // }
       const contents = data.contents;
       for (key in contents) {
         let contentArr = contents[key];
@@ -217,6 +233,81 @@ $.ajax({
         vidString = videoCount.toString() + (videoCount > 1 ? " videos" : " video");
         quizString = quizCount.toString() + (quizCount > 1 ? " quizzes" : " quiz");
         itemsCount.innerHTML = vidString + " &#x25CF; " + quizString;
+      }
+    }
+  },
+});
+
+$.ajax({
+  url: "../public/php/course/getReviews.php",
+  method: "post",
+  data: {
+    courseId: courseId,
+  },
+  success: function (response) {
+    const data = JSON.parse(response);
+    if (data.code === 200) {
+      const reviews = data.result;
+      totalReview = reviews.length;
+      for (review of reviews) {
+        // totalRating += review.star_equivalent_id;
+        // finalRating = 5 * (totalRating / (totalReview * 5));
+        // txtRating.innerHTML = finalRating.toFixed(1);
+        // document.getElementById("txtReviewBoxNum").innerHTML = review.toFixed(1);
+        // starsRev;
+        // for (let i = 0; i < 5; i++) {
+        //   if (i < Math.floor(finalRating)) {
+        //     starsRev[i].classList.remove("far");
+        //     starsRev[i].classList.add("fas");
+        //   } else {
+        //     starsRev[i].classList.remove("fas");
+        //     starsRev[i].classList.add("far");
+        //   }
+        // }
+        const monthNames = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+        const dateObj = new Date(review.submission_date);
+        const month = dateObj.getMonth() + 1;
+        const day = String(dateObj.getDate()).padStart(2, "0");
+        const year = dateObj.getFullYear();
+        const dateOutput = month + "/" + day + "/" + year;
+        console.log(dateOutput);
+        const newReviewNode = document.createElement("div");
+        newReviewNode.className = "col-12 mt-3";
+        newReviewNode.innerHTML = `
+            <div class="row py-3 px-4 reviewBox">
+              <div class="col-12 d-flex p-0 reviewStar" id="starsContainer">
+                <i class="far fa-star star1"></i>
+                <i class="far fa-star star2"></i>
+                <i class="far fa-star star3"></i>
+                <i class="far fa-star star4"></i>
+                <i class="far fa-star star5"></i>
+                <div class="reviewDate">${dateOutput}</div>
+              </div>
+              <div class="col-12 p-0 mt-3 text-justify">
+                ${review.feedback_text}
+              </div>
+              <div class="col-12 p-0 mt-1 reviewName">-${review.fullname}</div>
+            </div>`;
+        reviewsContainer.appendChild(newReviewNode);
+
+        const stars = newReviewNode.querySelectorAll(".fa-star");
+        for (let i = 0; i < review.star_equivalent_id; i++) {
+          stars[i].classList.remove("far");
+          stars[i].classList.add("fas");
+        }
       }
     }
   },

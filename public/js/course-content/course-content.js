@@ -4,6 +4,9 @@ const sideNavDataContainer = document.getElementById("sideNavDataContainer");
 const questionsContainer = document.getElementById("questionsContainer");
 const btnPrev = document.getElementById("btnPrev");
 const btnNext = document.getElementById("btnNext");
+const reviewInput = document.getElementById("reviewInput");
+const modalCourseTitle = document.getElementById("modalCourseTitle");
+const stars = document.getElementsByClassName("fa-star");
 let btnSideItems = [];
 let firstIter = true;
 let chapFirstIter = true;
@@ -17,6 +20,9 @@ let currentUser;
 let enrollmentId;
 let totalQuizzesCount = 0;
 let totalExamDone = 0;
+let courseDone = false;
+let courseTitle = "";
+let starRating;
 
 let url = new URL(window.location.href);
 const courseId = url.searchParams.get("id");
@@ -37,7 +43,10 @@ function changeActive(element) {
 
 $.ajax({
   url: "../public/php/course/getEnrollmentInfo.php",
-  method: "get",
+  method: "POST",
+  data: {
+    courseId: courseId,
+  },
   success: function (response) {
     const data = JSON.parse(response);
     if (data.code === 400) {
@@ -50,7 +59,7 @@ $.ajax({
   },
 });
 
-function verified(data) {
+function verified() {
   $.ajax({
     url: "../public/php/course-content/getCourseContents.php",
     method: "post",
@@ -60,6 +69,22 @@ function verified(data) {
     success: function (response) {
       const data = JSON.parse(response);
       let courseData = data.result[0];
+      $.ajax({
+        url: "../public/php/course-content/getLearningProgress.php",
+        method: "post",
+        data: {
+          enrollment_id: enrollmentId,
+        },
+        success: function (response) {
+          const data = JSON.parse(response);
+          if (data.code === 200) {
+            if (parseInt(data.result[0].progress_percent) >= 100) {
+              showModal();
+            }
+          }
+        },
+      });
+      courseTitle = courseData.course_title;
       document.getElementById("sideLoadingContainer").remove();
       document.getElementById("loadingMain").remove();
       sideNavDataContainer.classList.remove("d-none");
@@ -233,12 +258,12 @@ function disableNavBtn(element) {
 }
 
 function startQuiz(element) {
+  console.log(totalExamDone, totalQuizzesCount);
+
   let key = element.getAttribute("key");
   let chapter = element.getAttribute("chapNum");
   let examKey = element.getAttribute("ckey");
   let quizTitle = element.getAttribute("qTitle");
-  console.log(quizTitle);
-  console.log(examKey);
   questionsContainer.classList.remove("d-none");
   let answersArr = [];
   disabler(element);
@@ -331,6 +356,9 @@ function startQuiz(element) {
 
           const progress_percent = ((totalExamDone + 1) / totalQuizzesCount) * 100;
 
+          totalExamDone = totalExamDone + 1;
+          // console.log(totalExamDone, totalQuizzesCount);
+
           $.ajax({
             url: "../public/php/course-content/addQuizDone.php",
             method: "post",
@@ -351,6 +379,9 @@ function startQuiz(element) {
               for (el of btnSideItems) {
                 el.removeAttribute("disabled");
               }
+              if (progress_percent >= 100) {
+                $("#reviewModal").modal("show");
+              }
             },
           });
         };
@@ -364,4 +395,87 @@ function startQuiz(element) {
 
 function disabler(element) {
   element.setAttribute("disabled", "");
+}
+
+function showModal() {
+  courseDone = true;
+  $("#certModal").modal("show");
+  modalCourseTitle.innerHTML = courseTitle;
+}
+
+function goToOverview() {
+  window.location.assign(`/course-overview?id=${courseId}`);
+}
+
+for (i of stars) {
+  i.onmouseover = (e) => {
+    let end = false;
+    for (j of stars) {
+      if (!end) {
+        j.classList.remove("far");
+        j.classList.add("fas");
+      } else {
+        j.classList.remove("fas");
+        j.classList.add("far");
+      }
+      if (e.target == j) end = true;
+    }
+  };
+  i.onmouseout = () => {
+    if (!starRating) {
+      for (j of stars) {
+        j.classList.remove("fas");
+        j.classList.add("far");
+      }
+    }
+  };
+}
+
+function starCount(element) {
+  starRating = parseInt(element.getAttribute("count"));
+}
+
+function submitReview(element) {
+  element.setAttribute("disabled", "");
+  console.log(starRating);
+  $.ajax({
+    url: "../public/php/course-content/addRating.php",
+    method: "POST",
+    data: {
+      review_number: starRating,
+      review_text: reviewInput.value,
+      course_id: courseId,
+    },
+    success: function (response) {
+      $("#reviewModal").modal("hide");
+      showModal();
+    },
+  });
+  // firebase
+  //   .database()
+  //   .ref("reviews/" + courseId + "/" + currentUser.uid)
+  //   .update(
+  //     {
+  //       user: currentUser.uid,
+  //       created_datetime: firebase.database.ServerValue.TIMESTAMP,
+  //       review_number: starRating,
+  //       review_text: reviewInput.value,
+  //     },
+  //     (error) => {
+  //       if (error) {
+  //         console.log(error);
+  //       } else {
+  //         firebase
+  //           .database()
+  //           .ref("courses/" + courseId)
+  //           .update({
+  //             review_count: firebase.database.ServerValue.increment(1),
+  //           });
+
+  //         element.setAttribute("disabled", "");
+  //         $("#reviewModal").modal("hide");
+  //         showModal();
+  //       }
+  //     }
+  //   );
 }

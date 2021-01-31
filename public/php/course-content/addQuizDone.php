@@ -17,7 +17,7 @@ $date = date('Y-m-d H:i:s');
 $response = new \stdClass();
 $id = $_SESSION["userId"];
 
-if ($progress_percent != 100) {
+// if ($progress_percent != 100) {
     $add_query = "INSERT INTO user_exam_done (learner_id, exam_id, score, total) VALUES ('$id', '$examId', '$score', '$over');";
 
     if ($progress_percent == 100) {
@@ -26,7 +26,7 @@ if ($progress_percent != 100) {
         $add_query .= " UPDATE learning_progress SET text_status = 'CourseDone', progress_percent = '$progress_percent', current_chapter = '$current_chapter', current_chapter_title = '$current_chapter_title' WHERE enrollment_id = '$enrollment_id'; ";
     }
 
-echo $add_query;
+// echo $add_query;
     if ($conn->multi_query($add_query)) {
         $response->code = 200;
         $echo = json_encode($response);
@@ -38,5 +38,5 @@ echo $add_query;
     }
 
     echo $echo;
-}
+// }
 $conn->close();

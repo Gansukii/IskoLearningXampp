@@ -199,6 +199,24 @@ CREATE TABLE `User_Exam_Done`(
     ON UPDATE CASCADE
 );
 
+CREATE TABLE `Rating` (
+  `rating_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `course_id` INT NOT NULL,
+  `learner_id` INT NOT NULL,
+  `star_equivalent_id` INT NOT NULL,
+  `feedback_text` VARCHAR(1000) DEFAULT ' ',
+  `submission_date` DATE NOT NULL,
+  PRIMARY KEY (`rating_id`),
+  INDEX(course_id),
+  FOREIGN KEY (course_id) REFERENCES Course(course_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE,
+  INDEX(learner_id),
+  FOREIGN KEY (learner_id) REFERENCES user_information(user_information_id)
+    ON DELETE CASCADE 
+    ON UPDATE CASCADE
+);
+
 ";
    
 
