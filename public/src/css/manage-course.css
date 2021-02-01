@@ -1,0 +1,117 @@
+.sideNav {
+  width: 23%;
+  border-right: 0.75px solid #c4c4c4;
+  background-color: #ffffff;
+}
+.txtCourseTitle {
+  font-weight: 900;
+  font-size: 36px;
+}
+.t-cap {
+  text-transform: capitalize;
+}
+.sideTab {
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+}
+.sideTab:hover {
+  background-color: #f5f5f5;
+}
+.activeTab {
+  background-color: #f5f5f5;
+}
+.paperCourse {
+  background: #ffffff;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* .paperCourse:hover {
+  transform: scale(1.01);
+} */
+.quizTitle {
+  font-size: 18px;
+}
+.qNum {
+  font-weight: 400;
+}
+.tableThin {
+  font-weight: 500;
+  font-size: 14px;
+}
+.tableBold {
+  font-size: 14px;
+  font-weight: 900;
+}
+.gradeTableTxt {
+  font-size: 14px;
+}
+.gradeInProgress {
+  color: #7f0303;
+}
+.gradeComplete {
+  color: #28b02e;
+}
+.studentAvatar {
+  height: 35px;
+  width: 35px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  text-align: center;
+  /* background: url("../../../profileImages/1/H 3.png") no-repeat center; */
+}
+.studentContainer {
+  background: #f4f4f7;
+  border-radius: 5px;
+}
+.txtCourseGrade {
+  font-weight: bold;
+  font-size: 16px;
+  color: #8f8f8f;
+}
+.numGrade {
+  font-weight: 900;
+  font-size: 36px;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  color: #28b02e;
+}
+.close:hover {
+  background-color: #f5f5f5;
+}
+@media screen and (max-width: 576px) {
+  body,
+  .sideTab,
+  .txtCourseGrade {
+    font-size: 14px;
+  }
+  .txtCourseTitle {
+    font-size: 25px;
+  }
+  .gradeTableTxt {
+    font-size: 12px;
+  }
+  .numGrade {
+    font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .sideTab {
+    text-align: center;
+  }
+  .activeTab {
+    border-bottom: 2px solid #7f0303;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .sideNav {
+    height: 100vh;
+  }
+  /* .paperCourse {
+    height: 85px;
+  } */
+}

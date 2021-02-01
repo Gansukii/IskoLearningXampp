@@ -31,9 +31,16 @@ if (menuPop) {
   avatar.style = `background: url('${localStorage.getItem(
     "image_path"
   )}') no-repeat center; background-size: cover;`;
+  if (localStorage.getItem("image_path") == "null") {
+    avatar.removeAttribute("style");
+  }
   menuAvatar.style = `background: url('${localStorage.getItem(
     "image_path"
   )}') no-repeat center; background-size: cover;`;
+  if (localStorage.getItem("image_path") == "null") {
+    menuAvatar.removeAttribute("style");
+  }
+
   window.onresize = () => {
     if (document.documentElement.clientWidth < lg) {
       menuPop.style.left = "-100px";
