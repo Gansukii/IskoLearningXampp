@@ -192,6 +192,7 @@ CREATE TABLE `User_Exam_Done`(
   `exam_id` INT NOT NULL,
   `score` INT NOT NULL,
   `total` INT NOT NULL,
+  `submit_datetime` DATE NOT NULL,
   PRIMARY KEY (`User_exam_done_id`),
   INDEX (exam_id),
   FOREIGN KEY (exam_id) REFERENCES Exam(exam_id)

@@ -4,7 +4,7 @@ const avatar = document.getElementById("avatar");
 const menuAvatar = document.getElementById("menuAvatar");
 const menuPop = document.getElementById("menuPop");
 const signOut = document.getElementById("sign-out");
-const fullNameNav = document.getElementById("fullNameNav");
+const fullNameNav = document.getElementById("navFullName");
 const userTypeNav = document.getElementById("userTypeNav");
 
 let isOpen = false;
@@ -57,9 +57,11 @@ if (menuPop) {
   }
 }
 
+// console.log(fullNameNav);
+// console.log(userTypeNav);
 if (fullNameNav) {
   fullNameNav.innerHTML = localStorage.getItem("fullname");
-  userTypeNav.innerHTML = localStorage.getItem("status_type");
+  navUserType.innerHTML = localStorage.getItem("status_type");
 }
 
 avatar
