@@ -51,6 +51,7 @@ $.ajax({
   data: { courseId: courseId },
   success: function (response) {
     btnEnroll.removeAttribute("disabled");
+    btnEnroll.classList.remove("d-none");
     const data = JSON.parse(response);
     if (data.code === 400) {
       btnEnroll.onclick = () => {
@@ -314,7 +315,7 @@ $.ajax({
 });
 
 function startCourse() {
-  window.location.assign(`../public/course-content.html?id=${courseId}`);
+  window.location.assign(`../public/course-overview.html?id=${courseId}`);
 }
 
 // <div class="col-12 py-2">

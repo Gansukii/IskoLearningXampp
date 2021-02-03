@@ -21,9 +21,9 @@ $id = $_SESSION["userId"];
     $add_query = "INSERT INTO user_exam_done (learner_id, exam_id, score, total, submit_datetime) VALUES ('$id', '$examId', '$score', '$over', '$date');";
 
     if ($progress_percent == 100) {
-        $add_query .= " UPDATE learning_progress SET text_status = 'CourseDone', progress_percent = '$progress_percent', current_chapter = '$current_chapter', current_chapter_title = '$current_chapter_title', user_status = 'i' WHERE enrollment_id = '$enrollment_id'; ";
+        $add_query .= " UPDATE learning_progress SET text_status = 'Course Done', progress_percent = '$progress_percent', current_chapter = '$current_chapter', current_chapter_title = '$current_chapter_title', user_status = 'i' WHERE enrollment_id = '$enrollment_id'; ";
     } else {
-        $add_query .= " UPDATE learning_progress SET text_status = 'CourseDone', progress_percent = '$progress_percent', current_chapter = '$current_chapter', current_chapter_title = '$current_chapter_title' WHERE enrollment_id = '$enrollment_id'; ";
+        $add_query .= " UPDATE learning_progress SET text_status = 'Resume', progress_percent = '$progress_percent', current_chapter = '$current_chapter', current_chapter_title = '$current_chapter_title' WHERE enrollment_id = '$enrollment_id'; ";
     }
 
 // echo $add_query;
