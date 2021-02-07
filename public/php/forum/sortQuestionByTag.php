@@ -7,14 +7,16 @@ if ( $conn->connect_error ) {
 }
 
 $response = new \stdClass();
-// $id = $_SESSION["userId"];
+$tag_id = $_POST["tag_id"];
 $questions_array=array();
 $response->questions=array();
 
 
 $ask_query = "SELECT forum.forum_id, forum.title, forum.text_body, forum.upvote_count, forum.downvote_count, forum.created_datetime, forum.comment_count, user_information.fullname, user_information.username, user_information.user_type, user_information.image_path
-FROM `forum` 
+FROM `forum_tag` 
+INNER JOIN forum ON forum_tag.forum_id = forum.forum_id
 INNER JOIN user_information ON user_information.user_information_id=forum.user_id
+WHERE forum_tag.tag_id = '$tag_id'
 ORDER BY forum.upvote_count DESC, forum.created_datetime DESC";
 $result = $conn->query($ask_query);
 

@@ -178,8 +178,13 @@
                             id="questionTags"
                             placeholder="Add tag/s"
                           />
+                          <div
+                            class="ml-2 w-75 position-absolute tagSearchContainer"
+                            id="tagSearchContainer"
+                          ></div>
                         </div>
                       </form>
+                      <div class="row w-100 mx-0" id="tagsContainer"></div>
                     </div>
                   </div>
                   <div class="modal-footer">
@@ -198,75 +203,23 @@
 
           <div class="col-12 px-4 py-3 rounded paper">
             <div class="col-12 p-0 mb-2 txtPaper">Questions</div>
-            <div id="questionsContainer">
-              <!-- <div class="col-12 my-3">
-                <div class="row d-flex align-items-center">
-                  <button class="btn avatar" id="avatar">Av</button>
-                  <div class="col mx-2">
-                    <div class="row questionName">Full Name</div>
-                    <div class="row questionTime">3 hours ago</div>
-                  </div>
-                </div>
-                <div class="row mt-1">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Magnam laboriosam doloribus corrupti! Reprehenderit
-                  repudiandae quisquam asperiores eos sunt sed excepturi error,
-                  doloremque sit facilis ipsa, earum iusto nesciunt non aliquid.
-                </div>
-              </div>
-              <hr class="mb-1" />
-              <div class="col-12 mb-3">
-                <div class="row mb-3 questionIcons">
-                  <div class="d-flex align-items-center mr-3">
-                    <i class="far fa-caret-square-up mr-1"></i>1
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <i class="far fa-comment mr-1"></i>3
-                  </div>
-                </div>
-                <div class="row d-flex align-items-center">
-                  <button class="btn avatar" id="avatar">Av</button>
-                  <div class="col mx-2">
-                    <div class="row questionName">Full Name</div>
-                    <div class="row questionTime">5 hours ago</div>
-                  </div>
-                </div>
-                <div class="row mt-1">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Magnam laboriosam doloribus corrupti! Reprehenderit
-                  repudiandae quisquam asperiores eos sunt sed excepturi error,
-                  doloremque sit facilis ipsa, earum iusto nesciunt non aliquid.
-                </div>
-              </div>
-              <hr class="mb-1" />
-              <div class="col-12 mb-3">
-                <div class="row mb-3 questionIcons">
-                  <div class="d-flex align-items-center mr-3 upvoted">
-                    <i class="far fa-caret-square-up mr-1"></i>1
-                  </div>
-                  <div class="d-flex align-items-center">
-                    <i class="far fa-comment mr-1"></i>3
-                  </div>
-                </div>
-                <div class="row d-flex align-items-center">
-                  <button class="btn avatar" id="avatar">Av</button>
-                  <div class="col mx-2">
-                    <div class="row questionName">Full Name</div>
-                    <div class="row questionTime">10 hours ago</div>
-                  </div>
-                </div>
-                <div class="row mt-1">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Magnam laboriosam doloribus corrupti! Reprehenderit
-                  repudiandae quisquam asperiores eos sunt sed excepturi error,
-                  doloremque sit facilis ipsa, earum iusto nesciunt non aliquid.
-                </div>
-              </div> -->
-            </div>
+            <div id="questionsContainer"></div>
+            <div id="questionsContainerSorted"></div>
           </div>
         </div>
 
-        <div class="col-12 col-md-4 mx-2 px-4 py-3 rounded paper askQuestionPaper">qwerqer</div>
+        <!-- <div class="col-12 col-md-4 mx-2 px-4 py-3 rounded paper askQuestionPaper">qwerqer</div> -->
+        <div class="col-12 col-md-4">
+          <div class="row mx-0 w-100 mx-0 mt-3 mt-md-0 px-4 py-3 rounded paper tagsPaper">
+            <div class="col-12 px-0 askQuestionPaper">Tags</div>
+            <hr />
+            <div class="col-12 px-0" id="tagsPaperContainer">
+              <div class="badge badge-pill mx-1 mb-2 tagSelect tagSelected" id="tagAll">
+                <span class="badgeDelete" onclick="sortByTags(this)">all</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

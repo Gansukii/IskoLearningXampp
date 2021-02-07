@@ -34,7 +34,13 @@ if ( $conn->query( $sql ) ) {
   `last_login_ip` VARCHAR(50), 
   `registration_date` DATE NOT NULL);
   
-   CREATE TABLE `Forum` (
+  CREATE TABLE `Tag` (
+  `tag_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `tag_text` VARCHAR(25) UNIQUE,
+  PRIMARY KEY (`tag_id`)
+);
+
+  CREATE TABLE `Forum` (
   `forum_id` INT(6) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `title` VARCHAR(200) NOT NULL,
   `user_id` INT(6) NOT NULL,
@@ -42,16 +48,28 @@ if ( $conn->query( $sql ) ) {
   `upvote_count` MEDIUMINT NOT NULL DEFAULT 0,
   `downvote_count` MEDIUMINT NOT NULL DEFAULT 0,
   `comment_count` MEDIUMINT NOT NULL DEFAULT 0,
-  `created_datetime` DATETIME NOT NULL
+  `created_datetime` DATETIME NOT NULL,
+  INDEX (user_information_id),
+  FOREIGN KEY (user_information_id) REFERENCES User_Information(user_information_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
   );
   
-  CREATE TABLE `Upvote` (
-  `upvote_id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  CREATE TABLE `Forum_Tag` (
+  `forum_tag_id` INT AUTO_INCREMENT NOT NULL UNIQUE,
+  `tag_id` INT NOT NULL,
   `forum_id` INT NOT NULL,
-  `answer_id` INT,
-  `user_information_id` INT NOT NULL
-   );
-   
+  PRIMARY KEY (`forum_tag_id`),
+  INDEX (tag_id),
+  FOREIGN KEY (tag_id) REFERENCES TAG(tag_id)
+  ON DELETE RESTRICT
+  ON UPDATE CASCADE,
+  INDEX (forum_id),
+  FOREIGN KEY (forum_id) REFERENCES Forum(forum_id)
+  ON DELETE CASCADE
+  ON UPDATE CASCADE
+);
+
    CREATE TABLE `Answer` (
   `answer_id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   `forum_id` INT NOT NULL,
@@ -61,6 +79,21 @@ if ( $conn->query( $sql ) ) {
   `upvote_count` MEDIUMINT NOT NULL DEFAULT 0,
   `downvote_count` MEDIUMINT NOT NULL DEFAULT 0
 );
+
+CREATE TABLE `Upvote` (
+  `upvote_id` INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+  `forum_id` INT NOT NULL,
+  `answer_id` INT,
+  `user_information_id` INT NOT NULL,
+  INDEX (forum_id),
+  FOREIGN KEY (forum_id) REFERENCES Forum(forum_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  INDEX (answer_id),
+  FOREIGN KEY (answer_id) REFERENCES Answer(answer_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+   );
 
 CREATE TABLE `Course` (
   `course_id` INT AUTO_INCREMENT NOT NULL UNIQUE,

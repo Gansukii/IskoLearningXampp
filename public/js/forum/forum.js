@@ -2,9 +2,46 @@ const questionTitle = document.getElementById("questionTitle");
 const questionBody = document.getElementById("questionBody");
 const btnAskQuestion = document.getElementById("btnAskQuestion");
 const questionsContainer = document.getElementById("questionsContainer");
+const tagsContainer = document.getElementById("tagsContainer");
+const questionTags = document.getElementById("questionTags");
+const tagSearchContainer = document.getElementById("tagSearchContainer");
+const tagsPaperContainer = document.getElementById("tagsPaperContainer");
 let currDate = new Date();
 let isUpvotedArr = [];
 let questionsArr = [];
+let dbTags = [];
+let tags = [];
+let selectedSortTag = document.getElementById("tagAll");
+
+$.ajax({
+  url: "../public/php/forum/getTags.php",
+  method: "get",
+  success: function (response) {
+    const data = JSON.parse(response);
+    if (data.code === 200) {
+      for (tag of data.tags) {
+        dbTags.push(tag);
+      }
+      localStorage.setItem("tags", dbTags);
+
+      for (dataTag of dbTags) {
+        let searchTagItem = document.createElement("div");
+        searchTagItem.className = "p-1 d-none searchTagItem";
+        searchTagItem.setAttribute("onclick", "addTag(this,'container')");
+        searchTagItem.innerHTML = dataTag.tag_text;
+        tagSearchContainer.appendChild(searchTagItem);
+        let selectTag = document.createElement("div");
+        selectTag.className = "badge badge-pill mx-1 mb-2 tagSelect";
+        selectTag.id = dataTag.tag_id;
+        selectTag.innerHTML = `<span class="badgeDelete" onclick="sortByTags(this)">${dataTag.tag_text}</span>`;
+        tagsPaperContainer.appendChild(selectTag);
+      }
+    } else {
+      localStorage.setItem("tags", []);
+      console.log(data.text);
+    }
+  },
+});
 
 $.ajax({
   url: "../public/php/forum/getUpvotesById.php",
@@ -19,17 +56,18 @@ $.ajax({
       url: "../public/php/forum/getQuestion.php",
       method: "get",
       success: function (response) {
+        // console.log(response);
         const data = JSON.parse(response);
         if (data.code === 200) {
           questionsArr = data.questions;
-          showQuestions(data.questions);
+          showQuestions(data.questions, questionsContainer);
         } else alert(data.text);
       },
     });
   },
 });
 
-const showQuestions = (questions) => {
+const showQuestions = (questions, container) => {
   questions.forEach((data) => {
     let questionDate = new Date(data.created_datetime);
     let dateDiff = parseInt((currDate - questionDate) / 1000);
@@ -48,7 +86,7 @@ const showQuestions = (questions) => {
     } else if (hh <= 48) {
       timeAgo = "1 day ago";
     } else {
-      console.log(hh);
+      // console.log(hh);
       var days = Math.floor(hh / 24);
       timeAgo = days.toString() + " days ago";
     }
@@ -77,9 +115,19 @@ const showQuestions = (questions) => {
               <div class='row mt-1'>
                 ${data.text_body}
               </div>
+              <div class="col-12 mt-2 col-sm-6 px-0" id="badgeContainer"></div>
             </div>
             <hr class='mb-1' />`;
-    questionsContainer.appendChild(node);
+    const tagContainer = node.querySelector("#badgeContainer");
+    if (data.tags) {
+      for (tag of data.tags) {
+        const newTagNode = document.createElement("div");
+        newTagNode.className = "badge badge-pill mx-1 mb-2 tag";
+        newTagNode.innerHTML = tag;
+        tagContainer.appendChild(newTagNode);
+      }
+    }
+    container.appendChild(node);
   });
 };
 
@@ -91,7 +139,7 @@ function upvote(e) {
     (data) => data.forum_id == e.parentNode.getAttribute("key")
   );
 
-  console.log(forumIdentifier[0].upvote_count);
+  // console.log(forumIdentifier[0].upvote_count);
   if (!e.classList.contains("upvoted")) {
     e.classList.add("upvoted");
     forumIdentifier[0].upvote_count = parseInt(forumIdentifier[0].upvote_count) + 1;
@@ -103,7 +151,7 @@ function upvote(e) {
     e.lastElementChild.innerHTML = forumIdentifier[0].upvote_count;
     upvoted = 0;
   }
-  console.log(forumIdentifier[0].upvote_count);
+  // console.log(forumIdentifier[0].upvote_count);
   $.ajax({
     url: "../public/php/forum/addUpvote.php",
     method: "post",
@@ -146,22 +194,109 @@ function comment(e) {
 }
 
 btnAskQuestion.onclick = () => {
-  if (questionTitle.value == "" || questionBody.value == "") {
-    alert("Both fields cannot not be empty");
+  if (questionTitle.value == "" || questionBody.value == "" || tags.length < 1) {
+    alert("all fields cannot not be empty");
   } else {
+    btnAskQuestion.setAttribute("disabled", "");
     $.ajax({
       url: "../public/php/forum/addQuestion.php",
       method: "post",
       data: {
         questionTitle: questionTitle.value,
         questionBody: questionBody.value,
+        tags: tags,
       },
       success: function (response) {
+        // console.log(response);
         const data = JSON.parse(response);
         if (data.code === 200) {
           window.location.assign("../public/forum.html");
-        } else alert(data.text);
+        } else {
+          alert(data.text);
+          btnAskQuestion.removeAttribute("disabled");
+        }
       },
     });
   }
 };
+
+questionTags.onkeyup = (e) => {
+  if (e.key === "Enter" || e.keyCode === 13) {
+    addTag(e.target, "input");
+    // tags.push(questionTags.value);
+    // let newTag = document.createElement("span");
+    // newTag.className = "badge badge-pill mx-1 mb-2 tagItem d-flex flex-row";
+    // newTag.innerHTML = `<div>${questionTags.value}</div><span class="badgeDelete ml-1" onclick="deleteTag(this)">&times;</span>`;
+    // tagsContainer.appendChild(newTag);
+    // questionTags.value = "";
+  } else {
+    if (questionTags.value === "") tagSearchContainer.classList.add("d-none");
+    else tagSearchContainer.classList.remove("d-none");
+
+    let tagItems = document.getElementsByClassName("searchTagItem");
+    for (let i = 0; i < tagItems.length; i++) {
+      if (tagItems[i].textContent.toUpperCase().indexOf(questionTags.value.toUpperCase()) > -1) {
+        tagItems[i].classList.remove("d-none");
+      } else tagItems[i].classList.add("d-none");
+    }
+  }
+};
+
+function deleteTag(element) {
+  // console.log(element.previousSibling.textContent);
+  let remove = false;
+  tags = tags.filter((data) => {
+    if (data !== element.previousSibling.textContent || remove) {
+      return data;
+    } else {
+      remove = true;
+    }
+  });
+  element.parentNode.remove();
+  console.log(tags);
+}
+function addTag(element, action) {
+  let value = action === "input" ? element.value : element.textContent;
+  tags.push(value);
+  let newTag = document.createElement("span");
+  newTag.className = "badge badge-pill mx-1 mb-2 tagItem d-flex flex-row";
+  newTag.innerHTML = `<div>${value}</div><span class="badgeDelete ml-1" onclick="deleteTag(this)">&times;</span>`;
+  tagsContainer.appendChild(newTag);
+  questionTags.value = "";
+  tagSearchContainer.classList.add("d-none");
+  // console.log(tags);
+}
+
+function sortByTags(element) {
+  selectedSortTag.classList.remove("tagSelected");
+  element.parentNode.classList.add("tagSelected");
+  selectedSortTag = element.parentNode;
+  if (element === selectedSortTag) {
+    return;
+  }
+  if (element.textContent !== "all") {
+    questionsContainer.classList.add("d-none");
+    $.ajax({
+      url: "../public/php/forum/sortQuestionByTag.php",
+      method: "post",
+      data: {
+        tag_id: element.parentNode.id,
+      },
+      success: function (response) {
+        questionsContainerSorted.innerHTML = "";
+        const data = JSON.parse(response);
+        if (data.code === 200) {
+          showQuestions(data.questions, questionsContainerSorted);
+        } else {
+          console.log(data.text);
+          questionsContainerSorted.innerHTML = "no data found";
+        }
+      },
+    });
+    // document.getElementById("spinnerContainer").classList.add("d-flex");
+    // getSortedQuestion(element.textContent, userUpvotesArr);
+  } else {
+    questionsContainer.classList.remove("d-none");
+    // questionsContainerSorted.innerHTML = "";
+  }
+}
