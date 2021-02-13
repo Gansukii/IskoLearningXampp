@@ -65,6 +65,9 @@ nav {
 .menuContainer {
   position: relative;
 }
+#homeNav {
+  cursor: pointer;
+}
 
 .avatar {
   height: 40px;

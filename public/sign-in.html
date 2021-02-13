@@ -15,10 +15,7 @@
       rel="stylesheet"
     />
     <!--  FONTAWESOME  -->
-    <script
-      src="https://kit.fontawesome.com/7d591f1481.js"
-      crossorigin="anonymous"
-    ></script>
+    <script src="https://kit.fontawesome.com/7d591f1481.js" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -51,9 +48,14 @@
                 Categories
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)">Programming</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)">UI UX Design</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)"> Data Science</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)"> Machine Learning</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)">Networking</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)">Data Structure</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)">Database</a>
+                <a class="dropdown-item" href="#" onclick="navCategory(this)">Others</a>
               </div>
             </div>
           </li>
@@ -80,43 +82,25 @@
             </form>
           </li>
         </ul>
-        <a class="btn sign-in mr-3" href="sign-in.html" id="btnNavIn"
-          >Sign in</a
-        >
+        <a class="btn sign-in mr-3" href="sign-in.html" id="btnNavIn">Sign in</a>
         <a class="btn sign-up" href="sign-up.html" id="btnNavUp">Sign up</a>
       </div>
     </nav>
     <div class="row h-100 w-100 m-0 d-flex">
-      <div
-        class="col-10 col-md-5 col-lg-3 d-flex m-auto justify-content-center signContainer"
-      >
+      <div class="col-10 col-md-5 col-lg-3 d-flex m-auto justify-content-center signContainer">
         <form action="" class="d-flex justify-content-center py-2 px-4">
           <div class="row">
             <div class="col-md-12 signInTxt p-0 mt-5 mb-4">Sign In</div>
             <div class="row">
               <div class="col-md-12 form-group">
-                <input
-                  type="email"
-                  class="form-control"
-                  id="email"
-                  placeholder="Email"
-                />
+                <input type="email" class="form-control" id="email" placeholder="Email" />
               </div>
               <div class="col-md-12 mt-1 form-group">
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Password"
-                />
+                <input type="password" class="form-control" id="password" placeholder="Password" />
               </div>
             </div>
             <div class="col-md-12 p-0 mt-2">
-              <button
-                class="btn btn-danger btn-block py-2 m-0 btnSign"
-                id="sign-in"
-                type="submit"
-              >
+              <button class="btn btn-danger btn-block py-2 m-0 btnSign" id="sign-in" type="submit">
                 Sign In
               </button>
               <!--                        <button class="btn btnGoogle" id="googleSign">Sign in with Google</button>-->
@@ -137,9 +121,7 @@
                 </button>
               </div>
             </div>
-            <div class="col-md-12 small txtForgot mt-3 mb-5">
-              Forgot password?
-            </div>
+            <div class="col-md-12 small txtForgot mt-3 mb-5">Forgot password?</div>
             <div class="col-md-12 small txtNoAcc mb-3">
               Don't have an account?
               <a class="signUpBottom" href="sign-up.html">Sign up.</a>

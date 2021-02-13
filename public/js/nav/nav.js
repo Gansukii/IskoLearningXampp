@@ -6,6 +6,7 @@ const menuPop = document.getElementById("menuPop");
 const signOut = document.getElementById("sign-out");
 const fullNameNav = document.getElementById("navFullName");
 const userTypeNav = document.getElementById("userTypeNav");
+const homeNav = document.getElementById("homeNav");
 
 let isOpen = false;
 var lg = 992;
@@ -81,20 +82,6 @@ avatar
     })
   : null;
 
-// signOut
-//   ? (signOut.onclick = () => {
-//       firebase
-//         .auth()
-//         .signOut()
-//         .then(function () {
-//           window.location.assign("../../sign-in");
-//         })
-//         .catch(function (error) {
-//           alert("Error occured");
-//         });
-//     })
-//   : null;
-
 if (signOut)
   signOut.onclick = () => {
     let statusType = localStorage.getItem("status_type");
@@ -103,3 +90,19 @@ if (signOut)
     } else window.location.assign(`../public/index.html?signed-out`);
     localStorage.clear();
   };
+
+function navCategory(element) {
+  const category = element.textContent.toLowerCase().trim();
+  window.location.assign(`../public/category.html?search=${category}`);
+}
+
+if (homeNav) {
+  homeNav.onclick = () => {
+    console.log(localStorage.getItem("user_type"));
+    if (localStorage.getItem("status_type") === "PROFESSOR") {
+      window.location.assign(`../public/professor/home.html`);
+    } else {
+      window.location.assign(`../public/home.html`);
+    }
+  };
+}
