@@ -2,6 +2,7 @@ const textCourseTitle = document.getElementById("textCourseTitle");
 const btnShowChapInfo = document.getElementById("btnShowChapInfo");
 const sideNavDataContainer = document.getElementById("sideNavDataContainer");
 const questionsContainer = document.getElementById("questionsContainer");
+const btnDlCert = document.getElementById("btnDlCert");
 const btnPrev = document.getElementById("btnPrev");
 const btnNext = document.getElementById("btnNext");
 const reviewInput = document.getElementById("reviewInput");
@@ -23,6 +24,7 @@ let totalExamDone = 0;
 let courseDone = false;
 let courseTitle = "";
 let starRating;
+let profName = "";
 
 let url = new URL(window.location.href);
 const courseId = url.searchParams.get("id");
@@ -54,6 +56,7 @@ $.ajax({
       window.history.back();
     } else {
       enrollmentId = data.result[0].enrollment_id;
+      currentUser = data.result[0].fullname;
       verified();
     }
   },
@@ -69,6 +72,7 @@ function verified() {
     success: function (response) {
       const data = JSON.parse(response);
       let courseData = data.result[0];
+      profName = courseData.fullname;
       $.ajax({
         url: "../public/php/course-content/getLearningProgress.php",
         method: "post",
@@ -90,8 +94,6 @@ function verified() {
       sideNavDataContainer.classList.remove("d-none");
       textCourseTitle.innerHTML = courseData.course_title;
 
-      console.log(data);
-      // console.log(chapterData);
       const contents = data.contents;
       for (chapterData of data.chapters) {
         chapNames[chapterData.chapter_number] = chapterData.chapter_title;
@@ -401,6 +403,9 @@ function showModal() {
   courseDone = true;
   $("#certModal").modal("show");
   modalCourseTitle.innerHTML = courseTitle;
+  modifyPdf(
+    "https://firebasestorage.googleapis.com/v0/b/iskolearning.appspot.com/o/Certificate.pdf?alt=media&token=a778e26d-e238-410d-a631-ca0973dbd3bd"
+  );
 }
 
 function goToOverview() {
@@ -451,31 +456,95 @@ function submitReview(element) {
       showModal();
     },
   });
-  // firebase
-  //   .database()
-  //   .ref("reviews/" + courseId + "/" + currentUser.uid)
-  //   .update(
-  //     {
-  //       user: currentUser.uid,
-  //       created_datetime: firebase.database.ServerValue.TIMESTAMP,
-  //       review_number: starRating,
-  //       review_text: reviewInput.value,
-  //     },
-  //     (error) => {
-  //       if (error) {
-  //         console.log(error);
-  //       } else {
-  //         firebase
-  //           .database()
-  //           .ref("courses/" + courseId)
-  //           .update({
-  //             review_count: firebase.database.ServerValue.increment(1),
-  //           });
+}
 
-  //         element.setAttribute("disabled", "");
-  //         $("#reviewModal").modal("hide");
-  //         showModal();
-  //       }
-  //     }
-  //   );
+var PDFDocument = PDFLib.PDFDocument;
+var rgb = PDFLib.rgb;
+var StandardFonts = PDFLib.StandardFonts;
+
+async function modifyPdf(url) {
+  const existingPdfBytes = await fetch(url).then((res) => res.arrayBuffer());
+
+  const pdfDoc = await PDFDocument.load(existingPdfBytes);
+
+  const helveticaFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+  const helveticaThinFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const pages = pdfDoc.getPages();
+  const firstPage = pages[0];
+  const { width, height } = firstPage.getSize();
+
+  const courseTitleCap = courseTitle
+    .split(" ")
+    .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    .join(" ");
+
+  const currDate = new Date();
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const drawDate =
+    monthNames[currDate.getMonth()] + " " + currDate.getDate() + ", " + currDate.getFullYear();
+
+  var test1 = document.getElementById("Test");
+  var test2 = document.getElementById("Test2");
+  var test3 = document.getElementById("Test3");
+  var test4 = document.getElementById("Test4");
+  test1.innerHTML = currentUser;
+  test2.innerHTML = courseTitle.slice(0, 40);
+  test3.innerHTML = profName;
+  test4.innerHTML = drawDate;
+
+  var width1 = test1.clientWidth + 1;
+  var width2 = test2.clientWidth + 1;
+  var width3 = test3.clientWidth + 1;
+  var width4 = test4.clientWidth + 1;
+
+  firstPage.drawText(currentUser, {
+    x: width / 2 - width1 / 2,
+    y: height / 2,
+    size: 25,
+    font: helveticaFont,
+    color: rgb(0, 0, 0),
+  });
+
+  firstPage.drawText(courseTitleCap, {
+    x: width / 2 - width2 / 2,
+    y: height / 3,
+    size: 25,
+    font: helveticaFont,
+    color: rgb(0, 0, 0),
+  });
+
+  firstPage.drawText(profName, {
+    x: width / 2 - width3 / 2,
+    y: 70,
+    size: 15,
+    font: helveticaThinFont,
+    color: rgb(0, 0, 0),
+  });
+
+  firstPage.drawText(drawDate, {
+    x: width / 2 - width4 / 2,
+    y: 140,
+    size: 15,
+    font: helveticaThinFont,
+    color: rgb(0, 0, 0),
+  });
+
+  const pdfBytes = await pdfDoc.save();
+  btnDlCert.onclick = () => {
+    download(pdfBytes, `${courseTitle}-Certificate.pdf`, "application/pdf");
+  };
 }

@@ -12,9 +12,10 @@ $course_id = $_POST["courseId"];
 $response->result=array();
 
 
-$get_query = "SELECT * 
+$get_query = "SELECT * ,user_information.fullname
 FROM `Enrollment_Info` 
 INNER JOIN learning_progress ON Enrollment_Info.enrollment_id = learning_progress.enrollment_id
+INNER JOIN user_information ON user_information.user_information_id = Enrollment_Info.learner_id
 WHERE Enrollment_Info.learner_id = '$id' AND Enrollment_Info.course_id = '$course_id'";
 $result = $conn->query($get_query);
 
